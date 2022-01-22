@@ -20,6 +20,6 @@ As a user I want to:
 - list products that have lease expiring
 
 ## Programming language and database
-Since the course is build around Java and JavaFX it'll be used as language.
+Since in the course Java and JavaFX is used, it'll be the language used in this project.
 
 Data management course uses MariaDB and course project will be a relational database, so having a simple MariaDB compatible api is the first target in this project.
