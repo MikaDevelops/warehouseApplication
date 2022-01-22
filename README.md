@@ -1,5 +1,5 @@
 # warehouseApplication
-A school project to be used in two courses: User Interface Programming and Data Management Systems.
+A school project to be used in two courses: User Interface Programming and Data Management Systems. Language Java.
 
 ## Little background
 
@@ -20,6 +20,6 @@ As a user I want to:
 - list products that have lease expiring
 
 ## Programming language and database
-Since in the course Java and JavaFX is used, it'll be the language used in this project.
+Since in the User Interface course Java and JavaFX is used, it'll be the language used in this project.
 
 Data management course uses MariaDB and course project will be a relational database, so having a simple MariaDB compatible api is the first target in this project.
