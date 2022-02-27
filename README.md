@@ -23,3 +23,7 @@ As a user I want to:
 Since in the User Interface course Java and JavaFX is used, it'll be the language used in this project.
 
 Data management course uses MariaDB and course project will be a relational database, so having a simple MariaDB compatible api is the first target in this project.
+
+![ER-diagram](/documentation/ER-diagram_v01.png)
+
+![Relational Schema](/documentation/RelationalSchema_v01.png)
