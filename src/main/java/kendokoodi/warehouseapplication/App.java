@@ -5,11 +5,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 /**
- * JavaFX App
+ * kendokoodi.warehouseapplication.App contains main method and launches
+ * application.
+ * @author mika
+ * @author Mika.1.virtala@edu.karelia.fi
  */
 public class App extends Application {
 
@@ -17,7 +19,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"), 640, 480);
+        scene = new Scene(loadFXML("welcomescreen"), 640, 480);
         stage.setScene(scene);
         stage.show();
     }
