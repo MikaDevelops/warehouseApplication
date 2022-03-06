@@ -7,7 +7,6 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressIndicator?>
-<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
@@ -15,7 +14,7 @@
    <center>
       <VBox alignment="CENTER" prefHeight="180.0" prefWidth="300.0" BorderPane.alignment="CENTER">
          <children>
-            <Label prefHeight="84.0" prefWidth="228.0" text="Creates a demo database.&#10;This will replace previous demo&#10;database if exists. When you close&#10;the program, demo db is dropped.">
+            <Label prefHeight="122.0" prefWidth="259.0" text="Creates a demo database.&#10;This will replace previous demo&#10;database if exists. When you close&#10;the program using file-&gt;close,&#10;demo db is dropped.">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -29,39 +28,24 @@
                <graphic>
                   <ProgressIndicator fx:id="progIndicatorWS" prefHeight="28.0" prefWidth="30.0" visible="true" />
                </graphic></Label>
+            <Button fx:id="btnContinue" disable="true" mnemonicParsing="false" onAction="#btnWScontinue" text="Continue" />
          </children>
       </VBox>
    </center>
    <top>
-      <VBox prefHeight="67.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-         <children>
-            <MenuBar>
-              <menus>
-                <Menu mnemonicParsing="false" text="File">
-                  <items>
-                    <MenuItem mnemonicParsing="false" onAction="#menuClose" text="Close" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Database">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Change database" />
-                        <MenuItem mnemonicParsing="false" text="Delete database" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
-                  </items>
-                </Menu>
-              </menus>
-            </MenuBar>
-            <ToolBar prefHeight="40.0" prefWidth="200.0">
-              <items>
-                <Button mnemonicParsing="false" text="Products" />
-                  <Button mnemonicParsing="false" text="Asseccories" />
-              </items>
-            </ToolBar>
-         </children>
-      </VBox>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#menuClose" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#menuAbout" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
    </top>
 </BorderPane>

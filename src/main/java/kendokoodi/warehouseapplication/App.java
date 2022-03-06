@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
+import javafx.scene.layout.BorderPane;
 
 /**
  * kendokoodi.warehouseapplication.App contains main method and launches
@@ -19,16 +20,25 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("welcomescreen"), 640, 480);
+
+        scene = new Scene(loadFXML("welcomescreen"), 800, 640);
         stage.setScene(scene);
         stage.show();
     }
+    
 
+    
     static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
+        scene.setRoot(loadFXML(fxml) );
     }
-
-    private static Parent loadFXML(String fxml) throws IOException {
+    
+    /**
+     * Loads FXML view.
+     * @param fxml String, name of the view without .fxml extension.
+     * @return object hierarchy from a FXML document
+     * @throws IOException 
+     */
+    public static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }

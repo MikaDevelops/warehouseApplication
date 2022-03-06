@@ -3,8 +3,11 @@ package kendokoodi.warehouseapplication.dbOperations;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  * kendokoodi.warehouseapplication.dbOperations.MariaDB is a class
@@ -41,7 +44,7 @@ public class MariaDB {
     
     // create demo database
     /**
-     * createDemoDB creates a demonstrational warehouse database.
+     * createDemoDB creates a demo warehouse database.
      * @throws SQLException 
      */
     public static void createDemoDB () throws SQLException {
@@ -269,7 +272,7 @@ public class MariaDB {
     // edit room
     
     // edit serialized product
-    
+
     // edit an accessory
     
     // get store room information
@@ -279,6 +282,72 @@ public class MariaDB {
     // get room information
     
     // get serialized product information
+
+    /**
+     * Search database on product name or serial number.
+     * @param searchString String is used for searching the database.
+     * @param searchBase int 0 or 1. 0 uses searchString for product names 1
+     * uses searchString for product serial numbers.
+     * @return ArrayList of SerProdInfo objects containing search results.
+     */
+    public static ArrayList<SerProdInfo> searchSerialized( String searchString, int searchBase ) throws SQLException {
+        
+        ArrayList<SerProdInfo> serProdInfo = new ArrayList<>();
+        String base;
+        
+        switch (searchBase){
+            case 0:
+                base = "name=";
+            break;
+            
+            case 1:
+                base = "serialNo=";
+            break;
+            
+            default:
+                base = "notDefined"; // will cause SQL exception
+        }
+        
+        Connection c = openConnection();
+        
+        Statement stmt = c.createStatement();
+        
+        // select demo database
+        stmt.executeQuery( "USE DemoWarehouseApplicationDB" );
+        
+        PreparedStatement pstmt = c.prepareStatement(
+                "SELECT * FROM SerializedProduct WHERE "+ base + "?"
+        );
+        
+        pstmt.setString(1, searchString);
+        ResultSet rs = pstmt.executeQuery();
+        
+        closeConnection( c );
+        
+        // Handle result set
+        while (rs.next()){
+            
+            SerProdInfo serialized = new SerProdInfo();
+            serialized.productID = rs.getInt("productID");
+            serialized.productNo = rs.getString("productNo");
+            serialized.serialNo = rs.getString("serialNo");
+            serialized.manufacturer = rs.getString("manufacturer");
+            serialized.name =rs.getString("name");
+            serialized.warranty = rs.getInt("warranty");
+            serialized.isOwned = rs.getInt("isOwned");
+            serialized.leaseID = rs.getInt("leaseID");
+            serialized.roomID = rs.getString("roomID");
+            serialized.positionID = rs.getString("positionID");
+            
+            // add to array list
+            serProdInfo.add(serialized);
+        }
+        
+        // return array list of products.
+        return serProdInfo;
+    
+    
+    }
     
     // get accessory information
     

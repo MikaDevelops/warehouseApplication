@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kendokoodi.warehouseapplication.MainViewController">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#menuMainClose" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#menuMainAbout" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <center>
+      <TabPane prefHeight="394.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab text="Serialized products">
+               <content>
+                  <Pane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="btnMainListAll" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#btnMainListAllAction" text="List all products" />
+                        <ListView fx:id="listViewSerializedMain" layoutX="14.0" layoutY="50.0" prefHeight="288.0" prefWidth="523.0" />
+                        <Button fx:id="btnMainSearch" layoutX="474.0" layoutY="16.0" mnemonicParsing="false" onAction="#btnMainSearchAction" text="Search" />
+                        <Separator layoutX="164.0" layoutY="16.0" orientation="VERTICAL" prefHeight="23.0" prefWidth="7.0" />
+                        <TextField fx:id="txtFieldMainSearch" layoutX="201.0" layoutY="17.0" prefHeight="24.0" prefWidth="139.0" />
+                        <RadioButton fx:id="radSerializedName" layoutX="347.0" layoutY="8.0" mnemonicParsing="false" selected="true" text="Name">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="searchAttribute" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="radSerializedSN" layoutX="347.0" layoutY="30.0" mnemonicParsing="false" text="Serial Number" toggleGroup="$searchAttribute" />
+                     </children></Pane>
+               </content>
+          </Tab>
+          <Tab text="Add new serialized product">
+               <content>
+                  <Pane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="34.0" layoutY="18.0" text="Manufacturer" />
+                        <TextField fx:id="textFieldManufacturer" layoutX="124.0" layoutY="14.0" prefHeight="24.0" prefWidth="216.0" />
+                        <Label layoutX="14.0" layoutY="46.0" text="Product Number" />
+                        <TextField fx:id="textFieldProductNo" layoutX="124.0" layoutY="42.0" prefHeight="24.0" prefWidth="214.0" />
+                        <Label layoutX="30.0" layoutY="74.0" text="Serial Number" />
+                        <TextField fx:id="textFieldSerialNo" layoutX="124.0" layoutY="70.0" prefHeight="24.0" prefWidth="214.0" />
+                        <Label layoutX="31.0" layoutY="104.0" text="Product Name" />
+                        <TextField fx:id="textFieldProductName" layoutX="124.0" layoutY="100.0" prefHeight="24.0" prefWidth="214.0" />
+                        <Label layoutX="60.0" layoutY="135.0" text="Warranty" />
+                        <Label fx:id="lblAddMsg" layoutX="111.0" layoutY="274.0" prefHeight="16.0" prefWidth="57.0" />
+                        <TextField fx:id="textFieldWarranty" layoutX="124.0" layoutY="131.0" prefHeight="24.0" prefWidth="37.0" />
+                        <CheckBox fx:id="chkLeaseAdd" layoutX="25.0" layoutY="165.0" mnemonicParsing="false" text="Product is leased" />
+                        <ComboBox disable="true" layoutX="211.0" layoutY="162.0" onAction="#cmbBoxLeaseAction" prefHeight="24.0" prefWidth="131.0" promptText="Lease ID" />
+                        <ComboBox disable="true" layoutX="211.0" layoutY="197.0" onAction="#cmbBoxRoomAction" prefHeight="24.0" prefWidth="133.0" promptText="Room" />
+                        <RadioButton fx:id="radInProduction" layoutX="26.0" layoutY="200.0" mnemonicParsing="false" text="Product is in production">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="productionStorage" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="radInStorage" layoutX="27.0" layoutY="236.0" mnemonicParsing="false" text="Product is in storage" toggleGroup="$productionStorage" />
+                        <ComboBox disable="true" layoutX="212.0" layoutY="233.0" onAction="#cmbBoxStorageAction" prefHeight="24.0" prefWidth="132.0" promptText="Storage pos." />
+                        <Button layoutX="25.0" layoutY="267.0" mnemonicParsing="false" onAction="#btnSaveAdd" text="Save" />
+                     </children>
+                  </Pane>
+               </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </center>
+</BorderPane>
