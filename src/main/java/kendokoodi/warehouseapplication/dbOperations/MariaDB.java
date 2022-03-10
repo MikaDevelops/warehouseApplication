@@ -284,7 +284,7 @@ public class MariaDB {
         
         Statement stmt = c.createStatement();
         stmt.executeQuery("USE DemoWarehouseApplicationDB");
-        ResultSet rs = stmt.executeQuery("SELECT leaseID FROM Leasing;");
+        ResultSet rs = stmt.executeQuery("SELECT leaseID FROM Leasing");
         
         closeConnection ( c );
         
@@ -319,7 +319,7 @@ public class MariaDB {
         
         switch (searchBase){
             case 0:
-                base = "name=";
+                base = "name LIKE ";
             break;
             
             case 1:

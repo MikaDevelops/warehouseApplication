@@ -4,10 +4,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="458.0" prefWidth="658.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label alignment="TOP_LEFT" layoutX="100.0" layoutY="98.0" prefHeight="210.0" prefWidth="415.0" text="Warehouse appliction&#10;v. 00.00.01&#10;Author: Mika Virtala&#10;&#10;This program is without any wannaties. Usage at&#10;own risk.&#10;&#10;Requires MariaDB server.">
+      <Label alignment="TOP_LEFT" layoutX="100.0" layoutY="98.0" prefHeight="210.0" prefWidth="415.0" text="Warehouse appliction&#10;v. 00.00.01&#10;Author: Mika Virtala&#10;&#10;This program is without any warranties. Usage at&#10;own risk.&#10;&#10;Requires MariaDB server.">
          <font>
             <Font size="14.0" />
          </font>

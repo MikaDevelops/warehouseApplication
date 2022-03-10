@@ -181,6 +181,12 @@ public class MainViewController {
 
     }
     
+    /**
+     * Lease checkbox event handler. If checkbox is selected, enables
+     * lease id combo box and gets leaseID list from database.
+     * @param event
+     * @throws SQLException 
+     */
     @FXML
     void chkLeaseAddAction(ActionEvent event) throws SQLException {
         if (chkLeaseAdd.isSelected()){
