@@ -76,7 +76,7 @@ public class MainViewController {
     private CheckBox chkLeaseAdd;
     
     @FXML
-    private ComboBox<?> cmbBoxLease;
+    private ComboBox<String> cmbBoxLease;
 
     @FXML
     private ComboBox<?> cmbBoxRoom;
@@ -182,9 +182,15 @@ public class MainViewController {
     }
     
     @FXML
-    void chkLeaseAddAction(ActionEvent event) {
+    void chkLeaseAddAction(ActionEvent event) throws SQLException {
         if (chkLeaseAdd.isSelected()){
             cmbBoxLease.setDisable(false);
+            
+            ArrayList<String> leaseIdList = getLeaseIDlist();
+            ObservableList <String> leaseIdObservableList = 
+                    FXCollections.observableArrayList(leaseIdList);
+            cmbBoxLease.setItems(leaseIdObservableList);
+    
         }else if (!chkLeaseAdd.isSelected()) {
             cmbBoxLease.setDisable(true);
         } 

@@ -126,7 +126,7 @@ public class MariaDB {
         
         // Inserts some data into tables
         stmt.executeQuery("INSERT INTO Leasing (LeaseTime, leasingCompany, contractNo, leaseStartDate)"
-        +"VALUES(60,'3StepIT', 'L200220145','2022-02-21')" );
+        +"VALUES(60,'3StepIT', 'L200220145','2022-02-21'),(36,'IT-solutions','ew38-22','2018-09-01')" );
 
         stmt.executeQuery("INSERT INTO Room (roomID, building, campus)"
         +"VALUES"
@@ -274,6 +274,28 @@ public class MariaDB {
     // edit serialized product
 
     // edit an accessory
+    
+    // get leaseID list
+    public static ArrayList<String> getLeaseIDlist() throws SQLException{
+        
+        ArrayList<String> leaseIdList = new ArrayList<>();
+        
+        Connection c = openConnection();
+        
+        Statement stmt = c.createStatement();
+        stmt.executeQuery("USE DemoWarehouseApplicationDB");
+        ResultSet rs = stmt.executeQuery("SELECT leaseID FROM Leasing;");
+        
+        closeConnection ( c );
+        
+        while (rs.next()){
+        
+            leaseIdList.add(String.valueOf(rs.getInt("leaseID")));
+        
+        }
+        
+        return leaseIdList;
+    }
     
     // get store room information
     
