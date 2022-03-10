@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -23,6 +24,9 @@ import kendokoodi.warehouseapplication.dbOperations.SerProdInfo;
  * @author Mika.1.virtala@edu.karelia.fi
  */
 public class MainViewController {
+	
+    @FXML
+    private Label lblAddMsg;
 
     @FXML
     private Button btnMainListAll;
@@ -34,13 +38,50 @@ public class MainViewController {
     private TextField txtFieldMainSearch;
     
     @FXML
+    private TextField textFieldManufacturer;
+
+    @FXML
+    private TextField textFieldProductName;
+
+    @FXML
+    private TextField textFieldProductNo;
+
+    @FXML
+    private TextField textFieldSerialNo;
+
+    @FXML
+    private TextField textFieldWarranty;
+    
+    @FXML
     private ToggleGroup searchAttribute;
+    
+    @FXML
+    private ToggleGroup productionStorage;
+    
+    @FXML
+    private RadioButton radInProduction;
+
+    @FXML
+    private RadioButton radInStorage;
     
     @FXML
     private RadioButton radSerializedName;
     
     @FXML
     private RadioButton radSerializedSN;
+    
+    @FXML
+    private CheckBox chkLeaseAdd;
+    
+    @FXML
+    private ComboBox<?> cmbBoxLease;
+
+    @FXML
+    private ComboBox<?> cmbBoxRoom;
+    
+    @FXML
+    private ComboBox<?> cmbBoxStorage;
+    
     @FXML
     private ListView<SerProdInfo> listViewSerializedMain;
 
@@ -109,5 +150,40 @@ public class MainViewController {
         // update results to view
         listViewSerializedMain.setItems(ol);
     }
+    
+    @FXML
+    void btnSaveAdd(ActionEvent event) {
 
+    }
+
+    @FXML
+    void cmbBoxLeaseAction(ActionEvent event) {
+
+    }
+    
+    @FXML
+    void cmbBoxRoomAction(ActionEvent event) {
+
+    }
+    
+    @FXML
+    void cmbBoxStorageAction(ActionEvent event) {
+
+    }
+    
+    @FXML
+    void radInProductionAction(ActionEvent event) {
+    	if (radInProduction.isSelected()) {
+    		cmbBoxStorage.setDisable(true);
+    		cmbBoxRoom.setDisable(false);
+    	}
+    }
+    
+    @FXML
+    void radProductInStorageAction(ActionEvent event) {
+    	if (radInStorage.isSelected()) {
+    		cmbBoxRoom.setDisable(true);
+    		cmbBoxStorage.setDisable(false);
+    	}
+    }
 }
