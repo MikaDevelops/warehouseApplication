@@ -10,7 +10,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -151,11 +153,19 @@ public class MainViewController {
         listViewSerializedMain.setItems(ol);
     }
     
+    /**
+     * Event handler for save button.
+     * @param event 
+     */
     @FXML
     void btnSaveAdd(ActionEvent event) {
 
     }
-
+    
+    /**
+     * Event handler for combo box.
+     * @param event 
+     */
     @FXML
     void cmbBoxLeaseAction(ActionEvent event) {
 
@@ -169,6 +179,15 @@ public class MainViewController {
     @FXML
     void cmbBoxStorageAction(ActionEvent event) {
 
+    }
+    
+    @FXML
+    void chkLeaseAddAction(ActionEvent event) {
+        if (chkLeaseAdd.isSelected()){
+            cmbBoxLease.setDisable(false);
+        }else if (!chkLeaseAdd.isSelected()) {
+            cmbBoxLease.setDisable(true);
+        } 
     }
     
     @FXML
