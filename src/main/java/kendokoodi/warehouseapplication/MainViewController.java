@@ -79,10 +79,10 @@ public class MainViewController {
     private ComboBox<String> cmbBoxLease;
 
     @FXML
-    private ComboBox<?> cmbBoxRoom;
+    private ComboBox<String> cmbBoxRoom;
     
     @FXML
-    private ComboBox<?> cmbBoxStorage;
+    private ComboBox<String> cmbBoxStorage;
     
     @FXML
     private ListView<SerProdInfo> listViewSerializedMain;
@@ -117,7 +117,14 @@ public class MainViewController {
      * @param event 
      */
     @FXML
-    private void btnMainListAllAction(ActionEvent event) {
+    private void btnMainListAllAction(ActionEvent event) throws SQLException {
+        ArrayList<SerProdInfo> result = listAllSerialized();
+        ObservableList ol = FXCollections.observableArrayList();
+        for (int i = 0; i < result.size(); i++){
+            ol.add(result.get(i).name + " " + result.get(i).serialNo
+            + " " + result.get(i).roomID + " " + result.get(i).positionID);
+        }
+        listViewSerializedMain.setItems( ol );
     }
     
     /**
@@ -158,8 +165,67 @@ public class MainViewController {
      * @param event 
      */
     @FXML
-    void btnSaveAdd(ActionEvent event) {
-
+    void btnSaveAdd(ActionEvent event) throws SQLException {
+        
+        // New instance of SerProdInfo.
+        SerProdInfo formInfo = new SerProdInfo();
+        
+        // Read input from the form.
+        formInfo.manufacturer = textFieldManufacturer.getText();
+        formInfo.productNo = textFieldProductNo.getText();
+        formInfo.serialNo = textFieldSerialNo.getText();
+        formInfo.name = textFieldProductName.getText();
+        formInfo.warranty = Integer.valueOf(textFieldWarranty.getText());
+        
+        // If lease is selected, isOwned is set to 0.
+        if (chkLeaseAdd.isSelected()){
+            formInfo.isOwned = 0;
+            if (cmbBoxLease.getValue().isEmpty()){
+                formInfo.leaseID = 0; 
+            } else {
+                formInfo.leaseID = Integer.valueOf(cmbBoxLease.getValue());
+            }
+        }else{
+            formInfo.isOwned = 1;}
+        
+        if (!radInProduction.isSelected() && !radInStorage.isSelected()){
+            formInfo.isInProduction = 0;
+            formInfo.roomID = null;
+            formInfo.positionID = null;
+        }else if (radInProduction.isSelected()){
+            formInfo.isInProduction = 1;
+            formInfo.positionID = null;
+            if (cmbBoxRoom.getValue().isEmpty()){
+                formInfo.roomID = null;
+            }else{
+                formInfo.roomID = cmbBoxRoom.getValue();
+            }
+        }else if (radInStorage.isSelected()){
+            formInfo.isInProduction = 0;
+            formInfo.roomID = null;
+            if (cmbBoxStorage.getValue().isEmpty()){
+                formInfo.positionID = null;
+            }else{
+                formInfo.positionID = cmbBoxStorage.getValue();
+            }
+        }
+        
+        // Pass form information object to database method.
+        addSerializedProduct( formInfo );
+        
+        // Empty form
+        textFieldManufacturer.clear();
+        textFieldProductNo.clear();
+        textFieldSerialNo.clear();
+        textFieldProductName.clear();
+        textFieldWarranty.clear();
+        chkLeaseAdd.setSelected(false);
+        cmbBoxLease.setDisable(true);
+        radInProduction.setSelected(false);
+        cmbBoxRoom.setDisable(true);
+        radInStorage.setSelected(false);
+        cmbBoxStorage.setDisable(true);
+        formInfo = null;
     }
     
     /**
@@ -202,19 +268,42 @@ public class MainViewController {
         } 
     }
     
+    /**
+     * In production radio button event handler. If radio button is
+     * selected, enables room combo cox and disable storage combo box.
+     * Loads room ID list from database and adds it to room combo box.
+     * @param event
+     * @throws SQLException 
+     */	
     @FXML
-    void radInProductionAction(ActionEvent event) {
+    void radInProductionAction(ActionEvent event) throws SQLException {
     	if (radInProduction.isSelected()) {
     		cmbBoxStorage.setDisable(true);
     		cmbBoxRoom.setDisable(false);
+                
+                ArrayList<String> roomIdList = getRoomIDlist();
+                ObservableList <String> roomIdObservableList = 
+                    FXCollections.observableArrayList(roomIdList);
+                cmbBoxRoom.setItems(roomIdObservableList);
     	}
     }
     
+    /**
+     * In Storage radio button. If selected, enables storage position combo
+     * box and loads storage positions from database to the combo box list.
+     * @param event
+     * @throws SQLException 
+     */
     @FXML
-    void radProductInStorageAction(ActionEvent event) {
+    void radProductInStorageAction(ActionEvent event) throws SQLException {
     	if (radInStorage.isSelected()) {
     		cmbBoxRoom.setDisable(true);
     		cmbBoxStorage.setDisable(false);
+                
+                ArrayList<String> storageIdList = getStorageIDlist();
+                ObservableList <String> storageIdObservableList = 
+                    FXCollections.observableArrayList(storageIdList);
+                cmbBoxStorage.setItems(storageIdObservableList);
     	}
     }
 }

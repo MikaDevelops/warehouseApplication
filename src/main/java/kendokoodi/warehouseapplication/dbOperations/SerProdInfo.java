@@ -13,6 +13,7 @@ public class SerProdInfo {
     public String name;
     public int warranty;
     public int isOwned;
+    public int isInProduction;
     public int leaseID;
     public String roomID;
     public String positionID;

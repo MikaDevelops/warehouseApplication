@@ -21,7 +21,6 @@ public class MariaDB {
     private static final String connectionString = "jdbc:mariadb://localhost:"
             +"3306?user=kayttaja&password=pjger903lk43";
     
-    // create connection
     /**
      * Opens connection to database and returns Connection
      * @return  Returns Connection
@@ -32,7 +31,6 @@ public class MariaDB {
         return connection;
     }
     
-    // close connection
     /**
      * Closes Connection that is passed as parameter
      * @param c Connection
@@ -41,10 +39,12 @@ public class MariaDB {
     public static void closeConnection( Connection c ) throws SQLException {
         if ( c != null ) { c.close(); } }
     
-    
-    // create demo database
     /**
      * createDemoDB creates a demo warehouse database.
+     * <p>
+     * Executes a drop database query, which will delete DemoWarehouseApplicationDB
+     * named database if exists. Creates a new DemoWarehouseApplicationDB named database
+     * and adds some rows to it.
      * @throws SQLException 
      */
     public static void createDemoDB () throws SQLException {
@@ -231,14 +231,44 @@ public class MariaDB {
         closeConnection(c);
     }
     
-    // add a store room to database
+    // TODO: add a store room to database
     
-    // add a storage position
+    // TODO: add a storage position
     
-    // add a room where products are used 
+    // TODO: add a room where products are used 
     
-    // add a serialized product, add to owned / leased,
-    // add to room / storage postition
+    /**
+     * Adds a serialized product to database.
+     * @param serProd object containing attributes of a serialized product.
+     * @throws SQLException 
+     */
+    public static void addSerializedProduct( SerProdInfo serProd ) throws SQLException {
+        
+        Connection c = openConnection();
+        Statement stmt = c.createStatement();
+        stmt.execute("USE DemoWarehouseApplicationDB");
+        
+        PreparedStatement pstmt = c.prepareStatement(
+        "INSERT INTO SerializedProduct (productNo, serialNo, manufacturer, name, warranty, "
+        + "isOwned, isInProduction, leaseID, roomID, positionID) VALUES "
+        + "(?,?,?,?,?,?,?,?,?,?)"
+        );
+        
+        pstmt.setString(1, serProd.productNo);
+        pstmt.setString(2, serProd.serialNo);
+        pstmt.setString(3, serProd.manufacturer);
+        pstmt.setString(4, serProd.name);
+        pstmt.setInt(5, serProd.warranty);
+        pstmt.setInt(6, serProd.isOwned);
+        pstmt.setInt(7, serProd.isInProduction);
+        if ( serProd.leaseID == 0 ) { pstmt.setString(8,null); }else{
+            pstmt.setInt(8, serProd.leaseID); }
+        pstmt.setString(9, serProd.roomID);
+        pstmt.setString(10, serProd.positionID);
+        
+        pstmt.execute();
+        closeConnection ( c );
+    }
     
     // add an accessory, add storage position to accessory
     
@@ -255,27 +285,31 @@ public class MariaDB {
         closeConnection(c);
     }
     
-    // delete a store room from database
+    // TODO: delete a store room from database
     
-    // delete a storage position
+    // TODO: delete a storage position
     
-    // delete a room where products were used
+    // TODO: delete a room where products were used
     
-    // delete a serialized product
+    // TODO: delete a serialized product
     
-    // delete an accessory
+    // TODO: delete an accessory
     
-    // edit store room
+    // TODO: edit store room
     
-    // edit storage postition
+    // TODO: edit storage postition
     
-    // edit room
+    // TODO: edit room
     
     // edit serialized product
 
-    // edit an accessory
+    // TODO: edit an accessory
     
-    // get leaseID list
+    /**
+     * Method gets lease IDs from database.
+     * @return ArrayList of lease IDs
+     * @throws SQLException 
+     */
     public static ArrayList<String> getLeaseIDlist() throws SQLException{
         
         ArrayList<String> leaseIdList = new ArrayList<>();
@@ -297,13 +331,102 @@ public class MariaDB {
         return leaseIdList;
     }
     
-    // get store room information
+    /**
+     * Methods gets room IDs from database.
+     * @return ArrayList of room ID.
+     * @throws SQLException 
+     */
+    public static ArrayList<String> getRoomIDlist() throws SQLException{
+        
+        ArrayList<String> roomIdList = new ArrayList<>();
+        
+        Connection c = openConnection();
+        
+        Statement stmt = c.createStatement();
+        stmt.executeQuery("USE DemoWarehouseApplicationDB");
+        ResultSet rs = stmt.executeQuery("SELECT roomID FROM Room");
+        
+        closeConnection ( c );
+        
+        while (rs.next()){
+        
+            roomIdList.add(rs.getString("roomID"));
+        
+        }
+        
+        return roomIdList;
     
-    // get storage position information
+    }
     
-    // get room information
+    /**
+     * Method gets and returns storage ID list from database.
+     * @return ArrayList of storage positions.
+     * @throws SQLException 
+     */
+    public static ArrayList<String> getStorageIDlist() throws SQLException {
+        
+        ArrayList<String> storageIdList = new ArrayList<>();
+        
+        Connection c = openConnection();
+        
+        Statement stmt = c.createStatement();
+        stmt.executeQuery("USE DemoWarehouseApplicationDB");
+        ResultSet rs = stmt.executeQuery("SELECT positionID FROM StoragePosition");
+        
+        closeConnection ( c );
+        
+        while (rs.next()){
+        
+            storageIdList.add(rs.getString("positionID"));
+        
+        }
+        
+        return storageIdList;
+    }
     
-    // get serialized product information
+    // TODO: get store room information
+    
+    // TODO: get storage position information
+    
+    // TODO: get room information
+    
+    /**
+     * Lists all serialized products in SerializedProduct table.
+     * @return ArrayList of SerProd object containing all products from database.
+     * @throws SQLException 
+     */
+    public static ArrayList<SerProdInfo> listAllSerialized() throws SQLException{
+        ArrayList<SerProdInfo> serProdInfo = new ArrayList<>();
+        
+        Connection c = openConnection();
+        
+        Statement stmt = c.createStatement();
+        stmt.execute("USE DemoWarehouseApplicationDB");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM SerializedProduct");
+        
+        closeConnection ( c );
+        
+        // Handle result set
+        while (rs.next()){
+            
+            SerProdInfo serialized = new SerProdInfo();
+            serialized.productID = rs.getInt("productID");
+            serialized.productNo = rs.getString("productNo");
+            serialized.serialNo = rs.getString("serialNo");
+            serialized.manufacturer = rs.getString("manufacturer");
+            serialized.name =rs.getString("name");
+            serialized.warranty = rs.getInt("warranty");
+            serialized.isOwned = rs.getInt("isOwned");
+            serialized.leaseID = rs.getInt("leaseID");
+            serialized.roomID = rs.getString("roomID");
+            serialized.positionID = rs.getString("positionID");
+            
+            // add to array list
+            serProdInfo.add(serialized);
+        }
+        
+        return serProdInfo;
+    }
 
     /**
      * Search database on product name or serial number.
@@ -368,11 +491,7 @@ public class MariaDB {
         // return array list of products.
         return serProdInfo;
     
-    
     }
     
     // get accessory information
-    
-    
-    
 }
