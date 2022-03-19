@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kendokoodi.warehouseapplication.MainViewController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="415.0" prefWidth="635.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kendokoodi.warehouseapplication.MainViewController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -39,7 +39,7 @@
         <tabs>
           <Tab text="Serialized products">
                <content>
-                  <Pane prefHeight="200.0" prefWidth="200.0">
+                  <Pane prefHeight="354.0" prefWidth="655.0">
                      <children>
                         <Button fx:id="btnMainListAll" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#btnMainListAllAction" text="List all products" />
                         <ListView fx:id="listViewSerializedMain" layoutX="14.0" layoutY="50.0" prefHeight="288.0" prefWidth="523.0" />
@@ -52,6 +52,7 @@
                            </toggleGroup>
                         </RadioButton>
                         <RadioButton fx:id="radSerializedSN" layoutX="347.0" layoutY="30.0" mnemonicParsing="false" text="Serial Number" toggleGroup="$searchAttribute" />
+                        <Button fx:id="btnEditSelected" layoutX="537.0" layoutY="59.0" mnemonicParsing="false" onAction="#btnEditSelectedAction" prefHeight="49.0" prefWidth="92.0" text="Edit&#10;Selected" />
                      </children></Pane>
                </content>
           </Tab>

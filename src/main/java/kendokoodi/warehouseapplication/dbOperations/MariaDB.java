@@ -302,8 +302,70 @@ public class MariaDB {
     // TODO: edit room
     
     // edit serialized product
+    public static void updateSerializedProduct( SerProdInfo serializedProduct ) throws SQLException {
+        Connection c = openConnection();
+        Statement stmt = c.createStatement();
+        stmt.execute("USE DemoWarehouseApplicationDB");
+        PreparedStatement pstmt = c.prepareStatement( "UPDATE SerializedProduct "
+                + "SET productNo='?',"
+                + "SET serialNo='?',"
+                + "SET manufacturer='?',"
+                + "SET name='?',"
+                + "SET warranty=?,"
+                + "SET isOwned=?,"
+                + "SET isInProduction=?,"
+                + "SET leaseID=?,"
+                + "SET roomID='?',"
+                + "SET positionID='?' "
+                + "WHERE productID=?"
+        );
+        
+        pstmt.setString(1, serializedProduct.productNo);
+        pstmt.setString(2, serializedProduct.serialNo);
+        pstmt.setString(3, serializedProduct.manufacturer);
+        pstmt.setString(4, serializedProduct.name);
+        pstmt.setInt(5, serializedProduct.warranty);
+        pstmt.setInt(6, serializedProduct.isOwned);
+        pstmt.setInt(7, serializedProduct.isInProduction);
+        if ( serializedProduct.leaseID == 0 ) { pstmt.setString(8,null); }else{
+            pstmt.setInt(8, serializedProduct.leaseID); }
+        pstmt.setString(9, serializedProduct.roomID);
+        pstmt.setString(10, serializedProduct.positionID);
+        pstmt.setInt(11, serializedProduct.productID);
+        pstmt.execute();
+        
+        closeConnection( c );
+    }
 
-    // TODO: edit an accessory
+    public static SerProdInfo getSerializedProductData(int prodID) throws SQLException{
+        Connection c = openConnection();
+        Statement stmt = c.createStatement();
+        stmt.execute("USE DemoWarehouseApplicationDB");
+        
+        ResultSet rs = stmt.executeQuery("SELECT * FROM SerializedProduct "
+        + "WHERE productID=" + prodID
+        );
+        
+        closeConnection ( c );
+        
+        SerProdInfo result = new SerProdInfo();
+        
+        // move cursor to first row
+        rs.first();
+        
+        result.productID = rs.getInt("productID");
+        result.productNo = rs.getString("productNo");
+        result.serialNo = rs.getString("serialNo");
+        result.manufacturer = rs.getString("manufacturer");
+        result.name =rs.getString("name");
+        result.warranty = rs.getInt("warranty");
+        result.isOwned = rs.getInt("isOwned");
+        result.leaseID = rs.getInt("leaseID");
+        result.roomID = rs.getString("roomID");
+        result.positionID = rs.getString("positionID");
+        
+        return result;
+    }
     
     /**
      * Method gets lease IDs from database.
@@ -493,5 +555,6 @@ public class MariaDB {
     
     }
     
-    // get accessory information
+    // TODO: get accessory information
+    // TODO: edit an accessory
 }

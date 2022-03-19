@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -20,6 +21,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 import static kendokoodi.warehouseapplication.dbOperations.MariaDB.*;
 import kendokoodi.warehouseapplication.dbOperations.SerProdInfo;
+
 
 /**
  * Controller for the main view.
@@ -35,6 +37,9 @@ public class MainViewController {
     
     @FXML
     private Button btnMainSearch;
+    
+    @FXML
+    private Button btnEditSelected;
     
     @FXML
     private TextField txtFieldMainSearch;
@@ -147,21 +152,60 @@ public class MainViewController {
         // run search and catch results
         ArrayList<SerProdInfo> result = searchSerialized(inputText,searchOn);
         
-        //ObservableList<SerProdInfo> ol = FXCollections.observableArrayList(result);
+        ObservableList<SerProdInfo> ol = FXCollections.observableArrayList(result);
         
-        ObservableList ol = FXCollections.observableArrayList();       
-        
-        for (int i=0; i < result.size(); i++){
-            ol.add(result.get(i).name + " " + result.get(i).serialNo
-            + " " + result.get(i).roomID + " " + result.get(i).positionID);
-        }
+//        ObservableList ol = FXCollections.observableArrayList();       
+//        
+//        for (int i=0; i < result.size(); i++){
+//            ol.add( "id: " + result.get(i).productID 
+//            + ", name: " + result.get(i).name
+//            + ", s/n: " + result.get(i).serialNo
+//            + ", room: " + result.get(i).roomID 
+//            + ", storage pos: " + result.get(i).positionID);
+//        }
         
         // update results to view
         listViewSerializedMain.setItems(ol);
+        listViewSerializedMain.setCellFactory(clbck -> new ListCell<SerProdInfo>() {
+            @Override
+            protected void updateItem(SerProdInfo item, boolean empty){
+            super.updateItem( item, empty );
+            
+            if (empty || item == null){ setText(null); }
+            else {
+               
+                setText(item.manufacturer + " " + item.name + " s/n: " + item.serialNo 
+                        + " room: " + item.roomID + " storage pos.: " + item.positionID);
+                }
+            }
+    });
     }
     
     /**
-     * Event handler for save button.
+     * Main page edit button action.
+     * @param event 
+     */
+    @FXML
+    void btnEditSelectedAction(ActionEvent event) throws IOException {
+        SerProdInfo selected = listViewSerializedMain.getSelectionModel().getSelectedItem();
+        
+        if (selected != null){
+        System.out.println(selected.productID);
+        EditViewController.id = selected.productID;
+        App.setRoot("editView");
+        
+        
+//        Scene editScene = new Scene( App.loadFXML("editView"), 800, 600 );
+//        Stage editStage = new Stage();
+//        editStage.setScene(editScene);
+//        editStage.show();
+        
+        }
+    }
+    
+    /**
+     * Event handler for save button. Saves form into database
+     * and clears form.
      * @param event 
      */
     @FXML

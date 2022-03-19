@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="458.0" prefWidth="658.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kendokoodi.warehouseapplication.EditViewController">
+   <children>
+      <TextField fx:id="textFieldProductId" editable="false" layoutX="128.0" layoutY="12.0" prefHeight="24.0" prefWidth="237.0" />
+      <Label layoutX="14.0" layoutY="18.0" text="ID" />
+      <TextField fx:id="textFieldManufacturer" layoutX="128.0" layoutY="42.0" prefHeight="24.0" prefWidth="237.0" />
+      <Label layoutX="14.0" layoutY="48.0" text="Manufacturer" />
+      <TextField fx:id="textFieldProductName" layoutX="128.0" layoutY="74.0" prefHeight="24.0" prefWidth="237.0" />
+      <Label layoutX="14.0" layoutY="80.0" text="Product name" />
+      <TextField fx:id="textFieldProductNo" layoutX="128.0" layoutY="106.0" prefHeight="24.0" prefWidth="237.0" />
+      <Label layoutX="14.0" layoutY="112.0" text="Product number" />
+      <TextField fx:id="textFieldSerialNo" layoutX="128.0" layoutY="136.0" prefHeight="24.0" prefWidth="237.0" />
+      <Label layoutX="14.0" layoutY="142.0" text="Serial number" />
+      <TextField fx:id="textFieldWarranty" layoutX="128.0" layoutY="168.0" prefHeight="24.0" prefWidth="237.0" />
+      <Label layoutX="14.0" layoutY="174.0" text="Warranty" />
+      <Label layoutX="14.0" layoutY="250.0" text="Lease ID" />
+      <Label layoutX="13.0" layoutY="312.0" text="Room ID" />
+      <Label layoutX="13.0" layoutY="343.0" text="Storage position" />
+      <RadioButton fx:id="radLease" layoutX="44.0" layoutY="211.0" mnemonicParsing="false" onAction="#radLeaseAction" text="Product is leased">
+         <toggleGroup>
+            <ToggleGroup fx:id="tgLeaseOrOwned" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="radOwned" layoutX="229.0" layoutY="211.0" mnemonicParsing="false" onAction="#radOwnedAction" text="Product is owned" toggleGroup="$tgLeaseOrOwned" />
+      <RadioButton fx:id="radInProduction" layoutX="44.0" layoutY="279.0" mnemonicParsing="false" onAction="#radInProductionAction" text="Product is in production">
+         <toggleGroup>
+            <ToggleGroup fx:id="tgInProdOrStored" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="radInStorage" layoutX="229.0" layoutY="279.0" mnemonicParsing="false" onAction="#radInStorageAction" text="Product is stored" toggleGroup="$tgInProdOrStored" />
+      <Button layoutX="44.0" layoutY="389.0" mnemonicParsing="false" onAction="#btnCloseAndSave" text="Save and close" />
+      <Button layoutX="188.0" layoutY="389.0" mnemonicParsing="false" onAction="#btnCloseWOsave" text="Close without saving" />
+      <ComboBox fx:id="cboLeaseId" layoutX="128.0" layoutY="246.0" prefHeight="24.0" prefWidth="237.0" />
+      <ComboBox fx:id="cboRoomId" layoutX="128.0" layoutY="308.0" prefHeight="24.0" prefWidth="237.0" />
+      <ComboBox fx:id="cboStoragePos" layoutX="128.0" layoutY="339.0" prefHeight="24.0" prefWidth="237.0" />
+      <Button layoutX="425.0" layoutY="12.0" mnemonicParsing="false" onAction="#btnDelete" style="-fx-background-color: #FFAAAA;" text="Delete record" />
+   </children>
+</Pane>
