@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
@@ -43,5 +44,7 @@
       <ComboBox fx:id="cboRoomId" layoutX="128.0" layoutY="308.0" prefHeight="24.0" prefWidth="237.0" />
       <ComboBox fx:id="cboStoragePos" layoutX="128.0" layoutY="339.0" prefHeight="24.0" prefWidth="237.0" />
       <Button layoutX="425.0" layoutY="12.0" mnemonicParsing="false" onAction="#btnDelete" style="-fx-background-color: #FFAAAA;" text="Delete record" />
+      <CheckBox fx:id="chkDelete" layoutX="425.0" layoutY="45.0" mnemonicParsing="false" text="Delete record" />
+      <Label layoutX="425.0" layoutY="72.0" text="To delete record,&#10;tick delete record&#10;check box and&#10;press Delete record&#10;button" />
    </children>
 </Pane>

@@ -1,4 +1,3 @@
-
 package kendokoodi.warehouseapplication.dbOperations;
 
 /**

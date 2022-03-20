@@ -6,7 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
-import javafx.scene.layout.BorderPane;
 
 /**
  * kendokoodi.warehouseapplication.App contains main method and launches
@@ -20,14 +19,19 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-
+        
+        // remember to switch to welcomescreen before final tests
         scene = new Scene(loadFXML("welcomescreen"), 800, 640);
         stage.setScene(scene);
         stage.show();
     }
     
 
-    
+    /**
+     * Sets a view to scene.
+     * @param fxml name of the view without .fxml extension (String).
+     * @throws IOException 
+     */
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml) );
     }

@@ -1,6 +1,5 @@
 package kendokoodi.warehouseapplication.dbOperations;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -231,12 +230,6 @@ public class MariaDB {
         closeConnection(c);
     }
     
-    // TODO: add a store room to database
-    
-    // TODO: add a storage position
-    
-    // TODO: add a room where products are used 
-    
     /**
      * Adds a serialized product to database.
      * @param serProd object containing attributes of a serialized product.
@@ -270,9 +263,6 @@ public class MariaDB {
         closeConnection ( c );
     }
     
-    // add an accessory, add storage position to accessory
-    
-    // delete demo database
     /**
      * deleteDemoDB() deletes demonstrational warehouse database.
      * @throws SQLException 
@@ -285,39 +275,33 @@ public class MariaDB {
         closeConnection(c);
     }
     
-    // TODO: delete a store room from database
-    
-    // TODO: delete a storage position
-    
-    // TODO: delete a room where products were used
-    
-    // TODO: delete a serialized product
-    
-    // TODO: delete an accessory
-    
-    // TODO: edit store room
-    
-    // TODO: edit storage postition
-    
-    // TODO: edit room
-    
-    // edit serialized product
+    /**
+     * Deletes a record in database.
+     * @param id product id (record key) to be deleted.
+     * @throws SQLException 
+     */
+    public static void deleteRecord(int id) throws SQLException{
+        Connection c = openConnection();
+        Statement stmt = c.createStatement();
+        stmt.execute("USE DemoWarehouseApplicationDB");
+        stmt.execute("DELETE FROM SerializedProduct WHERE productID=" + String.valueOf(id));
+        closeConnection( c );
+    }
+
+    /**
+     * Updates a record in database.
+     * @param serializedProduct data to be updated to database.
+     * @throws SQLException 
+     */
     public static void updateSerializedProduct( SerProdInfo serializedProduct ) throws SQLException {
         Connection c = openConnection();
         Statement stmt = c.createStatement();
         stmt.execute("USE DemoWarehouseApplicationDB");
-        PreparedStatement pstmt = c.prepareStatement( "UPDATE SerializedProduct "
-                + "SET productNo='?',"
-                + "SET serialNo='?',"
-                + "SET manufacturer='?',"
-                + "SET name='?',"
-                + "SET warranty=?,"
-                + "SET isOwned=?,"
-                + "SET isInProduction=?,"
-                + "SET leaseID=?,"
-                + "SET roomID='?',"
-                + "SET positionID='?' "
-                + "WHERE productID=?"
+
+        PreparedStatement pstmt = c.prepareStatement("UPDATE SerializedProduct "
+                + "SET productNo=?, serialNo=?, manufacturer=?, "
+                + "name=?, warranty=?, isOwned=?, isInProduction=?, "
+                + "leaseID=?, roomID=?, positionID=? WHERE productID=?"
         );
         
         pstmt.setString(1, serializedProduct.productNo);
@@ -329,14 +313,22 @@ public class MariaDB {
         pstmt.setInt(7, serializedProduct.isInProduction);
         if ( serializedProduct.leaseID == 0 ) { pstmt.setString(8,null); }else{
             pstmt.setInt(8, serializedProduct.leaseID); }
-        pstmt.setString(9, serializedProduct.roomID);
-        pstmt.setString(10, serializedProduct.positionID);
+        if ( serializedProduct.roomID == null ){ pstmt.setString(9, null); }else{
+            pstmt.setString(9, serializedProduct.roomID); }
+        if ( serializedProduct.positionID == null ){pstmt.setString(10, null); }else{
+            pstmt.setString(10, serializedProduct.positionID); }
         pstmt.setInt(11, serializedProduct.productID);
         pstmt.execute();
         
         closeConnection( c );
     }
-
+    
+    /**
+     * Loads serialized product information from database.
+     * @param prodID product id.
+     * @return product information from database
+     * @throws SQLException 
+     */
     public static SerProdInfo getSerializedProductData(int prodID) throws SQLException{
         Connection c = openConnection();
         Statement stmt = c.createStatement();
@@ -360,6 +352,7 @@ public class MariaDB {
         result.name =rs.getString("name");
         result.warranty = rs.getInt("warranty");
         result.isOwned = rs.getInt("isOwned");
+        result.isInProduction = rs.getInt("isInProduction");
         result.leaseID = rs.getInt("leaseID");
         result.roomID = rs.getString("roomID");
         result.positionID = rs.getString("positionID");
@@ -445,13 +438,7 @@ public class MariaDB {
         
         return storageIdList;
     }
-    
-    // TODO: get store room information
-    
-    // TODO: get storage position information
-    
-    // TODO: get room information
-    
+
     /**
      * Lists all serialized products in SerializedProduct table.
      * @return ArrayList of SerProd object containing all products from database.
@@ -557,4 +544,18 @@ public class MariaDB {
     
     // TODO: get accessory information
     // TODO: edit an accessory
+    // TODO: delete a store room from database
+    // TODO: delete a storage position
+    // TODO: delete a room where products were used
+    // TODO: get store room information
+    // TODO: get storage position information
+    // TODO: get room information
+    // TODO: delete an accessory
+    // TODO: edit store room
+    // TODO: edit storage postition
+    // TODO: edit room
+    // TODO: add an accessory, add storage position to accessory
+    // TODO: add a store room to database
+    // TODO: add a storage position
+    // TODO: add a room where products are used 
 }

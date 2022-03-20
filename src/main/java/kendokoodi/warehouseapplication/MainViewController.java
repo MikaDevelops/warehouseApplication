@@ -124,12 +124,22 @@ public class MainViewController {
     @FXML
     private void btnMainListAllAction(ActionEvent event) throws SQLException {
         ArrayList<SerProdInfo> result = listAllSerialized();
-        ObservableList ol = FXCollections.observableArrayList();
-        for (int i = 0; i < result.size(); i++){
-            ol.add(result.get(i).name + " " + result.get(i).serialNo
-            + " " + result.get(i).roomID + " " + result.get(i).positionID);
-        }
+        ObservableList ol = FXCollections.observableArrayList( result );
+
         listViewSerializedMain.setItems( ol );
+        listViewSerializedMain.setCellFactory(clbck -> new ListCell<SerProdInfo>() {
+            @Override
+            protected void updateItem(SerProdInfo item, boolean empty){
+            super.updateItem( item, empty );
+            
+            if (empty || item == null){ setText(null); }
+            else {
+               
+                setText(item.manufacturer + " " + item.name + ", s/n: " + item.serialNo 
+                        + ", room: " + item.roomID + ", storage pos.: " + item.positionID);
+                }
+            }
+        });
     }
     
     /**
@@ -153,17 +163,7 @@ public class MainViewController {
         ArrayList<SerProdInfo> result = searchSerialized(inputText,searchOn);
         
         ObservableList<SerProdInfo> ol = FXCollections.observableArrayList(result);
-        
-//        ObservableList ol = FXCollections.observableArrayList();       
-//        
-//        for (int i=0; i < result.size(); i++){
-//            ol.add( "id: " + result.get(i).productID 
-//            + ", name: " + result.get(i).name
-//            + ", s/n: " + result.get(i).serialNo
-//            + ", room: " + result.get(i).roomID 
-//            + ", storage pos: " + result.get(i).positionID);
-//        }
-        
+
         // update results to view
         listViewSerializedMain.setItems(ol);
         listViewSerializedMain.setCellFactory(clbck -> new ListCell<SerProdInfo>() {
@@ -174,33 +174,27 @@ public class MainViewController {
             if (empty || item == null){ setText(null); }
             else {
                
-                setText(item.manufacturer + " " + item.name + " s/n: " + item.serialNo 
-                        + " room: " + item.roomID + " storage pos.: " + item.positionID);
+                setText(item.manufacturer + " " + item.name + ", s/n: " + item.serialNo 
+                        + ", room: " + item.roomID + ", storage pos.: " + item.positionID);
                 }
             }
-    });
+        });
     }
     
     /**
-     * Main page edit button action.
+     * Main page edit button action. Sets product id from selected listView object
+     * to EvenViewController static int variable id.
      * @param event 
      */
     @FXML
-    void btnEditSelectedAction(ActionEvent event) throws IOException {
+    private void btnEditSelectedAction(ActionEvent event) throws IOException {
         SerProdInfo selected = listViewSerializedMain.getSelectionModel().getSelectedItem();
         
         if (selected != null){
-        System.out.println(selected.productID);
+        lblAddMsg.setText("");
         EditViewController.id = selected.productID;
         App.setRoot("editView");
-        
-        
-//        Scene editScene = new Scene( App.loadFXML("editView"), 800, 600 );
-//        Stage editStage = new Stage();
-//        editStage.setScene(editScene);
-//        editStage.show();
-        
-        }
+        } else { lblAddMsg.setText("Please select an item from list"); }
     }
     
     /**
@@ -209,7 +203,7 @@ public class MainViewController {
      * @param event 
      */
     @FXML
-    void btnSaveAdd(ActionEvent event) throws SQLException {
+    private void btnSaveAdd(ActionEvent event) throws SQLException {
         
         // New instance of SerProdInfo.
         SerProdInfo formInfo = new SerProdInfo();
@@ -272,22 +266,18 @@ public class MainViewController {
         formInfo = null;
     }
     
-    /**
-     * Event handler for combo box.
-     * @param event 
-     */
     @FXML
-    void cmbBoxLeaseAction(ActionEvent event) {
+    private void cmbBoxLeaseAction(ActionEvent event) {
 
     }
     
     @FXML
-    void cmbBoxRoomAction(ActionEvent event) {
+    private void cmbBoxRoomAction(ActionEvent event) {
 
     }
     
     @FXML
-    void cmbBoxStorageAction(ActionEvent event) {
+    private void cmbBoxStorageAction(ActionEvent event) {
 
     }
     
@@ -298,7 +288,7 @@ public class MainViewController {
      * @throws SQLException 
      */
     @FXML
-    void chkLeaseAddAction(ActionEvent event) throws SQLException {
+    private void chkLeaseAddAction(ActionEvent event) throws SQLException {
         if (chkLeaseAdd.isSelected()){
             cmbBoxLease.setDisable(false);
             
@@ -320,7 +310,7 @@ public class MainViewController {
      * @throws SQLException 
      */	
     @FXML
-    void radInProductionAction(ActionEvent event) throws SQLException {
+    private void radInProductionAction(ActionEvent event) throws SQLException {
     	if (radInProduction.isSelected()) {
     		cmbBoxStorage.setDisable(true);
     		cmbBoxRoom.setDisable(false);
@@ -339,7 +329,7 @@ public class MainViewController {
      * @throws SQLException 
      */
     @FXML
-    void radProductInStorageAction(ActionEvent event) throws SQLException {
+    private void radProductInStorageAction(ActionEvent event) throws SQLException {
     	if (radInStorage.isSelected()) {
     		cmbBoxRoom.setDisable(true);
     		cmbBoxStorage.setDisable(false);
