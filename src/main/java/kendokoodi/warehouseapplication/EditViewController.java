@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import static kendokoodi.warehouseapplication.dbOperations.MariaDB.*;
 import kendokoodi.warehouseapplication.dbOperations.SerProdInfo;
 
@@ -36,6 +37,7 @@ public class EditViewController implements Initializable {
     /**
      * Sets data from a SerProdInfo object to edit form. Uses static int id
      * variable as productID.
+     * @throws SQLException
      */
     public void bindData () throws SQLException{
         
@@ -92,7 +94,18 @@ public class EditViewController implements Initializable {
             cboStoragePos.getSelectionModel().select( data.positionID );
         }else { cboStoragePos.setDisable(true); }
     }
-    
+    @FXML
+    private Label lblAttLease;
+    @FXML
+    private Label lblAttRoom;
+    @FXML
+    private Label lblAttStorage;
+    @FXML
+    private Label lblAttWarranty;
+    @FXML
+    private Label lblAttLeaseOwned;
+    @FXML
+    private Label lblAttProdStored;
     @FXML
     private TextField textFieldProductId;
     @FXML
@@ -129,18 +142,20 @@ public class EditViewController implements Initializable {
     /**
      * Action event for lease radio button. If checked will get lease id
      * numbers from database to combo box.
-     * @param event
-     * @throws SQLException 
+     * @param event 
      */
     @FXML
-    private void radLeaseAction(ActionEvent event) throws SQLException {
-        
+    private void radLeaseAction(ActionEvent event) {
+        try {
         if (radLease.isSelected()){
         cboLeaseId.setDisable(false);
         ArrayList leaseList = getLeaseIDlist();
         ObservableList <String> leaseIdObservableList = 
                     FXCollections.observableArrayList( leaseList );
-        cboLeaseId.setItems(leaseIdObservableList);
+        cboLeaseId.setItems(leaseIdObservableList);}
+        }catch (SQLException ex){
+                sqlExceptionHandler(ex, "editView radLeaseAction");
+                }
         
         // if leaseID is 0, select nothing from the list 
         // (prevents 0 value in the cbo list if toggled between)
@@ -148,7 +163,7 @@ public class EditViewController implements Initializable {
 //        else{
 //        cboLeaseId.getSelectionModel().select( String.valueOf( EditViewController.data.leaseID ) );}
         }
-    }
+    
     
     /**
      * Action event for product is owned radio button. Disables lease combo box.
@@ -168,10 +183,10 @@ public class EditViewController implements Initializable {
      * Action event for product is in production radio button. If checked,
      * gets room IDs from database and populates room id combo box.
      * @param event
-     * @throws SQLException 
      */
     @FXML
-    private void radInProductionAction(ActionEvent event) throws SQLException {
+    private void radInProductionAction(ActionEvent event) {
+        try {
         if (radInProduction.isSelected()){
         cboRoomId.setDisable(false);
         cboStoragePos.setDisable(true);
@@ -180,16 +195,19 @@ public class EditViewController implements Initializable {
                     FXCollections.observableArrayList( roomList ) ;
         cboRoomId.setItems(roomIdObservableList);
         }
+        } catch (SQLException ex){ sqlExceptionHandler(ex, 
+                "editView radInProductionAction"); }
     }
     
     /**
      * Action event for product in storage radio button. If checked gets
      * storage positions from database and populates storage id combo box.
      * @param event
-     * @throws SQLException 
      */
     @FXML
-    private void radInStorageAction(ActionEvent event) throws SQLException {
+    private void radInStorageAction(ActionEvent event) {
+        
+        try {
         if (radInStorage.isSelected()){
         cboRoomId.setDisable(true);
         cboStoragePos.setDisable(false);
@@ -198,16 +216,25 @@ public class EditViewController implements Initializable {
                     FXCollections.observableArrayList( storageList ) ;
         cboStoragePos.setItems(storageIdObservableList);
         }
+        }catch(SQLException ex){ sqlExceptionHandler(
+        ex, "editView radInStorageAction"); }
     }
     
     /**
      * Action event for close and save button.
      * @param event
-     * @throws SQLException
      * @throws IOException 
      */
     @FXML
-    private void btnCloseAndSave(ActionEvent event) throws SQLException, IOException {
+    private void btnCloseAndSave(ActionEvent event) throws IOException {
+        
+        // Hide attention labels (just in case this is a re-run)
+        lblAttLease.setVisible(false);
+        lblAttWarranty.setVisible(false);
+        lblAttRoom.setVisible(false);
+        lblAttStorage.setVisible(false);
+        lblAttProdStored.setVisible(false);
+        lblAttLeaseOwned.setVisible(false);
         
         SerProdInfo formInfo = new SerProdInfo();
         // read data from form to data.
@@ -216,45 +243,69 @@ public class EditViewController implements Initializable {
         formInfo.productNo = textFieldProductNo.getText();
         formInfo.serialNo = textFieldSerialNo.getText();
         formInfo.name = textFieldProductName.getText();
+        
+        // Try and check that user gives warranty as integer
+        boolean warrantyOk = false;
+        try{
         formInfo.warranty = Integer.parseInt(textFieldWarranty.getText());
+        warrantyOk = true;
+        } catch (NumberFormatException ne) {
+        lblAttWarranty.setVisible(true);
+        }
         
         // If lease is selected, isOwned is set to 0.
+        System.out.println(cboLeaseId.getValue());
+        boolean leaseOk = false;
         if (radLease.isSelected()){
             formInfo.isOwned = 0;
-            if (cboLeaseId.getValue().isEmpty()){
-                formInfo.leaseID = 0; 
+            if (cboLeaseId.getValue() == null || cboLeaseId.getValue().equals("0") ){
+                lblAttLease.setVisible(true);
             } else {
                 formInfo.leaseID = Integer.valueOf(cboLeaseId.getValue());
+                leaseOk = true;
             }
         }else{
-            formInfo.isOwned = 1;}
+            formInfo.isOwned = 1;
+            leaseOk = true;
+        }
         
+        boolean productionStorageOk = false;
         if (!radInProduction.isSelected() && !radInStorage.isSelected()){
-            formInfo.isInProduction = 0;
-            formInfo.roomID = null;
-            formInfo.positionID = null;
+            lblAttProdStored.setVisible(true);
         }else if (radInProduction.isSelected()){
             formInfo.isInProduction = 1;
-            formInfo.positionID = null;
-            if (cboRoomId.getValue().isEmpty()){
-                formInfo.roomID = null;
+            formInfo.positionID = "0";
+            if (cboRoomId.getValue() == null || cboRoomId.getValue() == "0"){
+                formInfo.roomID = "0";
+                lblAttRoom.setVisible(true);
             }else{
                 formInfo.roomID = cboRoomId.getValue();
+                productionStorageOk = true;
             }
         }
         
         if (radInStorage.isSelected()){
             formInfo.isInProduction = 0;
-            formInfo.roomID = null;
-            if (cboStoragePos.getValue().isEmpty()){
-                formInfo.positionID = null;
+            formInfo.roomID = "0";
+            if (cboStoragePos.getValue() == null || cboStoragePos.getValue() == "0"){
+                formInfo.positionID = "0";
+                lblAttStorage.setVisible(true);
             }else{
                 formInfo.positionID = cboStoragePos.getValue();
+                productionStorageOk = true;
             }}
-
-        updateSerializedProduct( formInfo );
+        
+        // Editing record forces values
+        if ( warrantyOk && leaseOk && productionStorageOk ){
+            
+        try {
+            updateSerializedProduct( formInfo );
+        } catch (SQLException e) { 
+            sqlExceptionHandler( e, "EditViewController btnCloseAndSave action event"); }
+        
         formInfo = null;
         App.setRoot( "mainView" );
+        }
     }
     
     /**
@@ -270,15 +321,17 @@ public class EditViewController implements Initializable {
     /**
      * Action event for delete record button.
      * @param event
-     * @throws SQLException
      * @throws IOException 
      */
     @FXML
-    private void btnDelete(ActionEvent event) throws SQLException, IOException {
+    private void btnDelete(ActionEvent event) throws IOException {
+        try {
         if (chkDelete.isSelected()){
         deleteRecord(id);
         App.setRoot( "mainView" );
         }
+        } catch (SQLException ex){ sqlExceptionHandler(ex,
+                "editView btnDelete action event"); }
     }
 
     @Override
@@ -288,8 +341,8 @@ public class EditViewController implements Initializable {
             bindData();
             
         } catch (SQLException ex) {
-            Logger.getLogger(EditViewController.class.getName()).
-                    log(Level.SEVERE, null, ex); }
+            sqlExceptionHandler(ex, "EditViewController initialize bindData");
+            }
     }
     
 }

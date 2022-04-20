@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import kendokoodi.warehouseapplication.App;
 
 /**
  * kendokoodi.warehouseapplication.dbOperations.MariaDB is a class
@@ -17,8 +19,8 @@ import java.util.ArrayList;
  */
 public class MariaDB {
     
-    private static final String connectionString = "jdbc:mariadb://localhost:"
-            +"3306?user=kayttaja&password=pjger903lk43";
+    private static final String connectionString = 
+            "jdbc:mariadb://localhost:3306?user=kayttaja&password=pjger903lk43";
     
     /**
      * Opens connection to database and returns Connection
@@ -50,41 +52,49 @@ public class MariaDB {
         Connection c = openConnection();
         Statement stmt = c.createStatement();
         
-        stmt.executeQuery( "DROP DATABASE IF EXISTS DemoWarehouseApplicationDB" );
+        stmt.execute("SET autocommit=1");
         
-        stmt.executeQuery( "CREATE DATABASE IF NOT EXISTS DemoWarehouseApplicationDB" );
-
-        stmt.executeQuery( "USE DemoWarehouseApplicationDB" );
-
-        stmt.executeQuery( "CREATE TABLE Room("
-          +"building VARCHAR(50) NOT NULL,"
+      //  stmt.execute( "DROP DATABASE IF EXISTS DemoWarehouseApplicationDB" );
+        deleteDemoDB();
+      
+        stmt.execute( "CREATE DATABASE IF NOT EXISTS DemoWarehouseApplicationDB" );
+        
+        stmt.execute( "USE DemoWarehouseApplicationDB" );
+        
+        
+        stmt.execute( "CREATE TABLE Room("
+//          +"building VARCHAR(50) NOT NULL,"
           +"roomID VARCHAR(50) NOT NULL,"
-          +"campus VARCHAR(50) NOT NULL,"
+//          +"campus VARCHAR(50) NOT NULL,"
           +"PRIMARY KEY (roomID) ) " );
 
-        stmt.executeQuery( "CREATE TABLE StoreRoom("
-          +"storeRoomID VARCHAR(50) NOT NULL,"
-          +"grossFloorArea FLOAT NOT NULL,"
-          +"roomHeight FLOAT NOT NULL,"
-          +"PRIMARY KEY (storeRoomID) ) " );
-
-        stmt.executeQuery("CREATE TABLE StoragePosition("
+//        stmt.executeQuery( "CREATE TABLE StoreRoom("
+//          +"storeRoomID VARCHAR(50) NOT NULL,"
+//          +"grossFloorArea FLOAT NOT NULL,"
+//          +"roomHeight FLOAT NOT NULL,"
+//          +"PRIMARY KEY (storeRoomID) ) " );
+        
+       
+        stmt.execute("CREATE TABLE StoragePosition("
           +"positionID VARCHAR(50) NOT NULL,"
-          +"storeRoomID VARCHAR(50) NOT NULL,"
-          +"PRIMARY KEY (positionID),"
-          +"FOREIGN KEY (storeRoomID) REFERENCES StoreRoom(storeRoomID)"
-          +"ON DELETE CASCADE) " );
+//          +"storeRoomID VARCHAR(50) NOT NULL,"
+          +"PRIMARY KEY (positionID))"
+               
+//          +"FOREIGN KEY (storeRoomID) REFERENCES StoreRoom(storeRoomID)"
+//          +"ON DELETE CASCADE) " 
+        );
 
-        stmt.executeQuery("CREATE TABLE Accessory("
-          +"name VARCHAR(80) NOT NULL,"
-          +"accessoryID INT NOT NULL AUTO_INCREMENT,"
-          +"quantity INT NOT NULL,"
-          +"productDesc VARCHAR(80),"
-          +"manufacturer VARCHAR(50),"
-          +"productNo VARCHAR(80),"
-          +"PRIMARY KEY (accessoryID) ) " );
-
-        stmt.executeQuery("CREATE TABLE Leasing("
+//        stmt.executeQuery("CREATE TABLE Accessory("
+//          +"name VARCHAR(80) NOT NULL,"
+//          +"accessoryID INT NOT NULL AUTO_INCREMENT,"
+//          +"quantity INT NOT NULL,"
+//          +"productDesc VARCHAR(80),"
+//          +"manufacturer VARCHAR(50),"
+//          +"productNo VARCHAR(80),"
+//          +"PRIMARY KEY (accessoryID) ) " );
+        
+       
+        stmt.execute("CREATE TABLE Leasing("
           +"leaseTime INT NOT NULL,"
           +"leasingCompany VARCHAR(80) NOT NULL,"
           +"leaseID INT NOT NULL AUTO_INCREMENT,"
@@ -92,13 +102,14 @@ public class MariaDB {
           +"leaseStartDate DATE NOT NULL,"
           +"PRIMARY KEY (leaseID) ) " );
 
-        stmt.executeQuery("CREATE TABLE AccessoryPos("
-          +"accessoryID INT NOT NULL,"
-          +"positionID VARCHAR(50) NOT NULL,"
-          +"FOREIGN KEY (accessoryID) REFERENCES Accessory(accessoryID),"
-          +"FOREIGN KEY (positionID) REFERENCES StoragePosition(positionID) ) " );
-
-        stmt.executeQuery("CREATE TABLE SerializedProduct("
+//        stmt.executeQuery("CREATE TABLE AccessoryPos("
+//          +"accessoryID INT NOT NULL,"
+//          +"positionID VARCHAR(50) NOT NULL,"
+//          +"FOREIGN KEY (accessoryID) REFERENCES Accessory(accessoryID),"
+//          +"FOREIGN KEY (positionID) REFERENCES StoragePosition(positionID) ) " );
+        
+        
+        stmt.execute("CREATE TABLE SerializedProduct("
           +"productNo VARCHAR(80),"
           +"serialNo VARCHAR(80) NOT NULL,"
           +"manufacturer VARCHAR(80) NOT NULL,"
@@ -115,119 +126,63 @@ public class MariaDB {
           +"FOREIGN KEY (roomID) REFERENCES Room(roomID),"
           +"FOREIGN KEY (positionID) REFERENCES StoragePosition(positionID) ) " );
 
-        stmt.executeQuery("CREATE TABLE OwnedDevice("
-          +"deviceID INT NOT NULL AUTO_INCREMENT,"
-          +"purchaseDate DATE NOT NULL,"
-          +"orderNo VARCHAR(50) NOT NULL,"
-          +"productID INT NOT NULL,"
-          +"PRIMARY KEY (deviceID),"
-          +"FOREIGN KEY (productID) REFERENCES SerializedProduct(productID) ) " );
-        
+//        stmt.executeQuery("CREATE TABLE OwnedDevice("
+//          +"deviceID INT NOT NULL AUTO_INCREMENT,"
+//          +"purchaseDate DATE NOT NULL,"
+//          +"orderNo VARCHAR(50) NOT NULL,"
+//          +"productID INT NOT NULL,"
+//          +"PRIMARY KEY (deviceID),"
+//          +"FOREIGN KEY (productID) REFERENCES SerializedProduct(productID) ) " );
+       
         // Inserts some data into tables
-        stmt.executeQuery("INSERT INTO Leasing (LeaseTime, leasingCompany, contractNo, leaseStartDate)"
+        
+        stmt.execute("INSERT INTO Leasing (LeaseTime, leasingCompany, contractNo, leaseStartDate)"
         +"VALUES(60,'3StepIT', 'L200220145','2022-02-21'),(36,'IT-solutions','ew38-22','2018-09-01')" );
-
-        stmt.executeQuery("INSERT INTO Room (roomID, building, campus)"
+        //stmt.execute("COMMIT");
+        
+        
+        stmt.executeQuery("INSERT INTO Room (roomID)"
         +"VALUES"
-        +"('M100','Metria','Joensuu'),"
-        +"('M101','Metria','Joensuu'),"
-        +"('M102','Metria','Joensuu'),"
-        +"('M103','Metria','Joensuu'),"
-        +"('M104','Metria','Joensuu'),"
-        +"('M105','Metria','Joensuu'),"
-        +"('M106','Metria','Joensuu'),"
-        +"('M107','Metria','Joensuu'),"
-        +"('M108','Metria','Joensuu'),"
-        +"('M109','Metria','Joensuu'),"
-        +"('M110','Metria','Joensuu'),"
-        +"('M201','Metria','Joensuu'),"
-        +"('M301','Metria','Joensuu'),"
-        +"('M302','Metria','Joensuu'),"
-        +"('M303','Metria','Joensuu'),"
-        +"('M304','Metria','Joensuu'),"
-        +"('M305','Metria','Joensuu'),"
-        +"('M306','Metria','Joensuu'),"
-        +"('F100','Futura','Joensuu'),"
-        +"('F101','Futura','Joensuu'),"
-        +"('F102','Futura','Joensuu'),"
-        +"('F103','Futura','Joensuu'),"
-        +"('F104','Futura','Joensuu'),"
-        +"('F105','Futura','Joensuu'),"
-        +"('F109','Futura','Joensuu'),"
-        +"('F110','Futura','Joensuu'),"
-        +"('F111','Futura','Joensuu'),"
-        +"('F112','Futura','Joensuu'),"
-        +"('F113','Futura','Joensuu'),"
-        +"('F200','Futura','Joensuu'),"
-        +"('F201','Futura','Joensuu'),"
-        +"('F202','Futura','Joensuu'),"
-        +"('F210','Futura','Joensuu'),"
-        +"('F211','Futura','Joensuu'),"
-        +"('F226c','Futura','Joensuu'),"
-        +"('F310','Futura','Joensuu'),"
-        +"('BOR100','Borealis','Joensuu')," 
-        +"('BOR101','Borealis','Joensuu'),"
-        +"('BOR102','Borealis','Joensuu'),"   
-        +"('BOR114','Borealis','Joensuu'),"  
-        +"('BOR201','Borealis','Joensuu'),"   
-        +"('BOR301','Borealis','Joensuu') " );
-
-        stmt.executeQuery("INSERT INTO SerializedProduct (productNo, serialNo, manufacturer, name, warranty, isOwned, isInProduction)"
+        +"('M100'),"
+        +"('M101'),"
+        +"('M102'),"
+        +"('M103'),"
+        +"('M104'),"
+        +"('M105'),"
+        +"('M106'),"
+        +"('M107')"
+        );
+        //stmt.execute("COMMIT");
+        
+        
+        stmt.execute("INSERT INTO SerializedProduct (productNo, serialNo, manufacturer, name, warranty, isOwned, isInProduction)"
         +"VALUES" 
         +"('60-1382-01','ASDFGHJKL1','Extron','DTP CrossPoint 86 4K',24,0,0),"
-        +"('60-1382-01','ASDFGHJKL2','Extron','DTP CrossPoint 86 4K',24,0,1),"
-        +"('60-1382-01','ASDFGHJKL3','Extron','DTP CrossPoint 86 4K',24,1,0),"
-        +"('60-1382-01','ASDFGHJKL4','Extron','DTP CrossPoint 86 4K',12,0,1),"
-        +"('60-1382-01','ASDFGHJKL5','Extron','DTP CrossPoint 86 4K',36,1,1),"
         +"('60-1625-01','QWERTY6','Extron','DTP T SW4 HD 4K',12,0,1),"
-        +"('60-1625-01','QWERTY5','Extron','DTP T SW4 HD 4K',12,0,1),"
-        +"('60-1625-01','QWERTY1','Extron','DTP T SW4 HD 4K',12,0,1),"
-        +"('60-1625-01','QWERTY2','Extron','DTP T SW4 HD 4K',12,0,1),"
-        +"('60-1625-01','QWERTY3','Extron','DTP T SW4 HD 4K',12,0,1),"
         +"('60-1594-01','POIUYTT357','Extron','SMP 111',24,0,1),"
-        +"('60-1594-01','POIUYTT233','Extron','SMP 111',24,0,1),"
-        +"('60-1594-01','POIUYTT313','Extron','SMP 111',24,0,1),"
-        +"('60-1594-01','POIUYTT332','Extron','SMP 111',24,0,1),"
-        +"('60-1594-01','POIUYTT334','Extron','SMP 111',24,1,0),"
         +"('6511006','tyrieruw844','Crestron','DM-NVX-360',12,1,1),"
-        +"(NULL,'wowowow2','Shure','SM58 Microphone',12,1,1),"
-        +"(NULL,'wowowow4','Shure','SM58 Microphone',12,1,1),"
-        +"(NULL,'wowowow7','Shure','SM58 Microphone',12,1,1),"
-        +"(NULL,'wowowow8','Shure','SM58 Microphone',12,1,1),"
-        +"(NULL,'wowowow9','Shure','SM58 Microphone',12,1,1),"
-        +"(NULL,'wowowo7w0','Shure','SM58 Microphone',12,1,1),"
-        +"(NULL,'wowow5ow2','Shure','SM58 Microphone',12,1,1),"
-        +"(NULL,'w22ow1w4','Shure','SM58 Microphone',12,1,1) " );
+        +"(NULL,'wowowow2','Shure','SM58 Microphone',12,1,1)"
+        );
+        //stmt.execute("COMMIT");
 
-        stmt.executeQuery("INSERT INTO StoreRoom (storeRoomID, grossFloorArea, roomHeight)"
-        +"VALUES('128',9.0,2.5) " );
-
-        stmt.executeQuery("INSERT INTO StoragePosition (positionID, storeRoomID) "
-        +"VALUES"
-        +"('M1-A1','128'),('M1-A2','128'),('M1-A3','128'),('M1-A4','128'),('M1-A5','128'),"
-        +"('M1-A6','128'),('M1-B1','128'),('M1-B2','128'),('M1-B3','128'),('M1-B4','128'),"
-        +"('M1-B5','128'),('M1-B6','128'),('M1-C1','128'),('M1-C2','128'),('M1-C3','128'),"
-        +"('M1-C4','128'),('M1-C5','128'),('M1-C6','128') " );
-
-        stmt.executeQuery("INSERT INTO Accessory (name,quantity) "
-        +"VALUES('Yleisruuvi PROF uppokanta Zn T30 6x160mm',300),"
-        +"('Switchcraft Open 1/4” Stereo Jack',12),('Kramer HDMI-kaapeli 3m',5)" );
-
-        stmt.executeQuery("INSERT INTO AccessoryPos (accessoryID, positionID) "
-        +"VALUES(1,'M1-A1'),(2,'M1-A1'),(3,'M1-A1')" );
-
-        stmt.executeQuery("UPDATE SerializedProduct SET LeaseID=1 WHERE isOwned=0" );
-
-        stmt.executeQuery("UPDATE SerializedProduct SET roomID='M100' "
-        +"WHERE isInProduction=1 AND productID IN (2,6,11,17)" );
-
-        stmt.executeQuery("UPDATE SerializedProduct SET roomID='M101' "
-        +"WHERE isInProduction=1 AND productID IN (16,18)" );
-
-        stmt.executeQuery("UPDATE SerializedProduct SET positionID='M1-C1' "
-        +"WHERE isInProduction=0 AND productID IN (1,3,15)" );
+        //stmt.executeQuery("INSERT INTO StoreRoom (storeRoomID, grossFloorArea, roomHeight)"
+        //+"VALUES('128',9.0,2.5) " );
         
-        closeConnection(c);
+       
+        stmt.execute("INSERT INTO StoragePosition (positionID) "
+        +"VALUES"
+        +"('M1-A1'),('M1-A2'),('M1-A3')" );
+        //stmt.execute("COMMIT");
+
+//        stmt.executeQuery("INSERT INTO Accessory (name,quantity) "
+//        +"VALUES('Yleisruuvi PROF uppokanta Zn T30 6x160mm',300),"
+//        +"('Switchcraft Open 1/4” Stereo Jack',12),('Kramer HDMI-kaapeli 3m',5)" );
+
+//        stmt.executeQuery("INSERT INTO AccessoryPos (accessoryID, positionID) "
+//        +"VALUES(1,'M1-A1'),(2,'M1-A1'),(3,'M1-A1')" );
+
+        stmt.close();
+        closeConnection( c );
     }
     
     /**
@@ -239,6 +194,7 @@ public class MariaDB {
         
         Connection c = openConnection();
         Statement stmt = c.createStatement();
+        stmt.execute("SET autocommit=1");
         stmt.execute("USE DemoWarehouseApplicationDB");
         
         PreparedStatement pstmt = c.prepareStatement(
@@ -260,6 +216,8 @@ public class MariaDB {
         pstmt.setString(10, serProd.positionID);
         
         pstmt.execute();
+        //stmt.execute("COMMIT");
+        stmt.close();
         closeConnection ( c );
     }
     
@@ -270,8 +228,9 @@ public class MariaDB {
     public static void deleteDemoDB() throws SQLException {
         Connection c = openConnection();
         Statement stmt = c.createStatement();
+        stmt.execute("SET autocommit=1");
         stmt.executeQuery("DROP DATABASE IF EXISTS DemoWarehouseApplicationDB");
-        
+        stmt.close();
         closeConnection(c);
     }
     
@@ -283,19 +242,23 @@ public class MariaDB {
     public static void deleteRecord(int id) throws SQLException{
         Connection c = openConnection();
         Statement stmt = c.createStatement();
+        stmt.execute("SET autocommit=1");
         stmt.execute("USE DemoWarehouseApplicationDB");
         stmt.execute("DELETE FROM SerializedProduct WHERE productID=" + String.valueOf(id));
+        //stmt.execute("COMMIT");
+        stmt.close();
         closeConnection( c );
     }
 
     /**
-     * Updates a record in database.
+     * Updates a record into database.
      * @param serializedProduct data to be updated to database.
      * @throws SQLException 
      */
     public static void updateSerializedProduct( SerProdInfo serializedProduct ) throws SQLException {
         Connection c = openConnection();
         Statement stmt = c.createStatement();
+        stmt.execute("SET autocommit=1");
         stmt.execute("USE DemoWarehouseApplicationDB");
 
         PreparedStatement pstmt = c.prepareStatement("UPDATE SerializedProduct "
@@ -313,13 +276,14 @@ public class MariaDB {
         pstmt.setInt(7, serializedProduct.isInProduction);
         if ( serializedProduct.leaseID == 0 ) { pstmt.setString(8,null); }else{
             pstmt.setInt(8, serializedProduct.leaseID); }
-        if ( serializedProduct.roomID == null ){ pstmt.setString(9, null); }else{
+        if ( serializedProduct.roomID == "0" ){ pstmt.setString(9, null); }else{
             pstmt.setString(9, serializedProduct.roomID); }
-        if ( serializedProduct.positionID == null ){pstmt.setString(10, null); }else{
+        if ( serializedProduct.positionID == "0" ){pstmt.setString(10, null); }else{
             pstmt.setString(10, serializedProduct.positionID); }
         pstmt.setInt(11, serializedProduct.productID);
         pstmt.execute();
-        
+        //stmt.execute("COMMIT");
+        stmt.close();
         closeConnection( c );
     }
     
@@ -332,11 +296,13 @@ public class MariaDB {
     public static SerProdInfo getSerializedProductData(int prodID) throws SQLException{
         Connection c = openConnection();
         Statement stmt = c.createStatement();
+        stmt.execute("SET autocommit=1");
         stmt.execute("USE DemoWarehouseApplicationDB");
         
         ResultSet rs = stmt.executeQuery("SELECT * FROM SerializedProduct "
         + "WHERE productID=" + prodID
         );
+        //stmt.execute("COMMIT");
         
         closeConnection ( c );
         
@@ -357,7 +323,9 @@ public class MariaDB {
         result.roomID = rs.getString("roomID");
         result.positionID = rs.getString("positionID");
         
+        stmt.close();
         return result;
+        
     }
     
     /**
@@ -372,9 +340,11 @@ public class MariaDB {
         Connection c = openConnection();
         
         Statement stmt = c.createStatement();
+        stmt.execute("SET autocommit=1");
         stmt.executeQuery("USE DemoWarehouseApplicationDB");
         ResultSet rs = stmt.executeQuery("SELECT leaseID FROM Leasing");
-        
+        //stmt.execute("COMMIT");
+        stmt.close();
         closeConnection ( c );
         
         while (rs.next()){
@@ -398,9 +368,11 @@ public class MariaDB {
         Connection c = openConnection();
         
         Statement stmt = c.createStatement();
+        stmt.execute("SET autocommit=1");
         stmt.executeQuery("USE DemoWarehouseApplicationDB");
         ResultSet rs = stmt.executeQuery("SELECT roomID FROM Room");
-        
+        //stmt.execute("COMMIT");
+        stmt.close();
         closeConnection ( c );
         
         while (rs.next()){
@@ -425,9 +397,11 @@ public class MariaDB {
         Connection c = openConnection();
         
         Statement stmt = c.createStatement();
+        stmt.execute("SET autocommit=1");
         stmt.executeQuery("USE DemoWarehouseApplicationDB");
         ResultSet rs = stmt.executeQuery("SELECT positionID FROM StoragePosition");
-        
+        //stmt.execute("COMMIT");
+        stmt.close();
         closeConnection ( c );
         
         while (rs.next()){
@@ -450,9 +424,12 @@ public class MariaDB {
         Connection c = openConnection();
         
         Statement stmt = c.createStatement();
+        stmt.execute("SET autocommit=1");
         stmt.execute("USE DemoWarehouseApplicationDB");
-        ResultSet rs = stmt.executeQuery("SELECT * FROM SerializedProduct");
-        
+        ResultSet rs = stmt.executeQuery("SELECT * FROM SerializedProduct"
+                + " ORDER BY productID");
+        //stmt.execute("COMMIT");
+        stmt.close();
         closeConnection ( c );
         
         // Handle result set
@@ -483,6 +460,7 @@ public class MariaDB {
      * @param searchBase int 0 or 1. 0 uses searchString for product names 1
      * uses searchString for product serial numbers.
      * @return ArrayList of SerProdInfo objects containing search results.
+     * @throws SQLException
      */
     public static ArrayList<SerProdInfo> searchSerialized( String searchString, int searchBase ) throws SQLException {
         
@@ -505,6 +483,7 @@ public class MariaDB {
         Connection c = openConnection();
         
         Statement stmt = c.createStatement();
+        stmt.execute("SET autocommit=1");
         
         // select demo database
         stmt.executeQuery( "USE DemoWarehouseApplicationDB" );
@@ -516,6 +495,8 @@ public class MariaDB {
         pstmt.setString(1, searchString);
         ResultSet rs = pstmt.executeQuery();
         
+        stmt.close();
+        pstmt.close();
         closeConnection( c );
         
         // Handle result set
@@ -540,6 +521,37 @@ public class MariaDB {
         // return array list of products.
         return serProdInfo;
     
+    }
+    
+    /**
+     * Writes SQLException information to log file.
+     * @param e SQLException
+     * @param sourceOfError String that describes from where error came.
+     */
+    public static void sqlExceptionHandler( SQLException e, String sourceOfError ){
+        
+        for (Throwable ex : e) {
+        if (ex instanceof SQLException){  
+        String causeString = "Cause: ";
+            Throwable th = ex.getCause();
+            while( th != null ){
+                causeString =causeString + th + ";\n";
+                System.out.println("Cause: " + th);
+                th = th.getCause();
+            }
+            
+        
+            String exceptionString = "source: " + sourceOfError +";\n"
+                    + LocalDateTime.now().toString() + ";\n"
+                    + "State: " + ((SQLException) ex).getSQLState() + ";\n"
+                    + "Error code: " + ((SQLException) ex).getErrorCode() + ";\n"
+                    + "Message: " + ex.getMessage() +";\n"
+                    + causeString + ";\n\n\n";
+            
+            App.writeErrorToFile( exceptionString );
+            
+        }
+        }
     }
     
     // TODO: get accessory information

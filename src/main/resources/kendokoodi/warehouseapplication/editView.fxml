@@ -22,7 +22,7 @@
       <TextField fx:id="textFieldSerialNo" layoutX="128.0" layoutY="136.0" prefHeight="24.0" prefWidth="237.0" />
       <Label layoutX="14.0" layoutY="142.0" text="Serial number" />
       <TextField fx:id="textFieldWarranty" layoutX="128.0" layoutY="168.0" prefHeight="24.0" prefWidth="237.0" />
-      <Label layoutX="14.0" layoutY="174.0" text="Warranty" />
+      <Label layoutX="10.0" layoutY="174.0" text="Warranty, months" />
       <Label layoutX="14.0" layoutY="250.0" text="Lease ID" />
       <Label layoutX="13.0" layoutY="312.0" text="Room ID" />
       <Label layoutX="13.0" layoutY="343.0" text="Storage position" />
@@ -46,5 +46,11 @@
       <Button layoutX="425.0" layoutY="12.0" mnemonicParsing="false" onAction="#btnDelete" style="-fx-background-color: #FFAAAA;" text="Delete record" />
       <CheckBox fx:id="chkDelete" layoutX="425.0" layoutY="45.0" mnemonicParsing="false" text="Delete record" />
       <Label layoutX="425.0" layoutY="72.0" text="To delete record,&#10;tick delete record&#10;check box and&#10;press Delete record&#10;button" />
+      <Label fx:id="lblAttLease" layoutX="365.0" layoutY="250.0" text="&lt;- If leased, must have Lease ID" textFill="RED" visible="false" />
+      <Label fx:id="lblAttRoom" layoutX="365.0" layoutY="312.0" prefHeight="24.0" prefWidth="265.0" text="&lt;- If in production, must have Room" textFill="RED" visible="false" wrapText="true" />
+      <Label fx:id="lblAttStorage" layoutX="365.0" layoutY="343.0" text="&lt;- If stored, must have storage pos." textFill="RED" visible="false" />
+      <Label fx:id="lblAttWarranty" layoutX="365.0" layoutY="174.0" prefHeight="16.0" prefWidth="223.0" text="&lt;- give integer (whole number)" textFill="RED" visible="false" />
+      <Label fx:id="lblAttLeaseOwned" layoutX="375.0" layoutY="212.0" text="&lt;- must be leased or owned" textFill="#ff1100" visible="false" />
+      <Label fx:id="lblAttProdStored" layoutX="365.0" layoutY="280.0" text="&lt;- choose one!" textFill="#ff1100" visible="false" />
    </children>
 </Pane>

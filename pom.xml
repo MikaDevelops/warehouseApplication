@@ -25,9 +25,62 @@
             <artifactId>mariadb-java-client</artifactId>
             <version>3.0.3</version>
         </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.6.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>5.6.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.6.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
+                <executions>
+                  <execution>
+                    <phase>package</phase>
+                    <goals>
+                      <goal>shade</goal>
+                    </goals>
+                    <configuration>
+                      <transformers>
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                          <mainClass>kendokoodi.warehouseapplication.Main</mainClass>
+                        </transformer>
+                      </transformers>
+                    </configuration>
+                  </execution>
+                </executions>
+              </plugin>
+            <!-- <plugin>
+                
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                  <archive>
+                    <manifest>
+                      <addClasspath>true</addClasspath>
+                      <classpathPrefix>lib/</classpathPrefix>
+                      <mainClass>kendokoodi.warehouseapplication.App</mainClass>
+                    </manifest>
+                  </archive>
+                </configuration>
+              </plugin> -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -41,7 +94,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.4</version>
                 <configuration>
-                    <mainClass>kendokoodi.warehouseapplication.App</mainClass>
+                    <mainClass>kendokoodi.warehouseapplication.Main</mainClass>
                 </configuration>
                 <executions>
                     <execution>

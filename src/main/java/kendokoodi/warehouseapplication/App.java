@@ -1,5 +1,7 @@
 package kendokoodi.warehouseapplication;
 
+import java.io.File;
+import java.io.FileWriter;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -45,6 +47,21 @@ public class App extends Application {
     public static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
+    }
+    
+    public static void writeErrorToFile(String error){
+        try{
+            File errorFile = new File ( "errorLog.txt" );
+            if (!errorFile.exists()){
+                errorFile.createNewFile();
+            }
+        } catch (IOException e){ e.printStackTrace(); }
+        
+        try{
+            FileWriter errorFileWriter = new FileWriter ( "errorLog.txt", true );
+            errorFileWriter.write( error );
+            errorFileWriter.close();
+        } catch (IOException e){ e.printStackTrace(); }
     }
 
     public static void main(String[] args) {

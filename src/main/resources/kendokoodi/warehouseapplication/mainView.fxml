@@ -53,7 +53,7 @@
                         </RadioButton>
                         <RadioButton fx:id="radSerializedSN" layoutX="347.0" layoutY="30.0" mnemonicParsing="false" text="Serial Number" toggleGroup="$searchAttribute" />
                         <Button fx:id="btnEditSelected" layoutX="537.0" layoutY="59.0" mnemonicParsing="false" onAction="#btnEditSelectedAction" prefHeight="49.0" prefWidth="92.0" text="Edit&#10;Selected" />
-                        <Label fx:id="lblAddMsg" layoutX="537.0" layoutY="108.0" prefHeight="86.0" prefWidth="99.0" wrapText="true" />
+                        <Label fx:id="lblEditMsg" layoutX="537.0" layoutY="108.0" prefHeight="86.0" prefWidth="99.0" wrapText="true" />
                      </children></Pane>
                </content>
           </Tab>
@@ -82,6 +82,8 @@
                         <RadioButton fx:id="radInStorage" layoutX="27.0" layoutY="236.0" mnemonicParsing="false" onAction="#radProductInStorageAction" text="Product is in storage" toggleGroup="$productionStorage" />
                         <ComboBox fx:id="cmbBoxStorage" disable="true" layoutX="212.0" layoutY="233.0" onAction="#cmbBoxStorageAction" prefHeight="24.0" prefWidth="132.0" promptText="Storage pos." />
                         <Button layoutX="25.0" layoutY="267.0" mnemonicParsing="false" onAction="#btnSaveAdd" text="Save" />
+                        <Label fx:id="lblAttWarranty" layoutX="167.0" layoutY="135.0" text="&lt;- give integer (whole number)" textFill="#b90f0f" visible="false" />
+                        <Label fx:id="lblAttProdInfo" layoutX="344.0" layoutY="74.0" text="&lt;- you must at least give&#10;     serial number and&#10;&lt;- product name" textFill="#b90f0f" visible="false" wrapText="true" />
                      </children>
                   </Pane>
                </content>

@@ -36,19 +36,18 @@ public class WelcomeScreenController implements Initializable {
     @FXML
     private Button btnContinue;
 
-//    private void switchToSecondary() throws IOException {
-//        App.setRoot("secondary");
-//    }
 
     /**
      * Action event handler for menu close. Deletes demo database and
      * closes program.
      * @param event
-     * @throws SQLException 
      */
     @FXML
-    private void menuClose(ActionEvent event) throws SQLException {
+    private void menuClose(ActionEvent event) {
+        try {
         deleteDemoDB();
+        } catch (SQLException ex){ sqlExceptionHandler(ex,
+                "welcomeScreen menuClose action event"); }
         Platform.exit();
         System.exit(0);
         
@@ -88,6 +87,7 @@ public class WelcomeScreenController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(WelcomeScreenController.class.getName()).log(Level.SEVERE, null, ex);
             lblWSmessage.setText("That didn't work out :(");
+            sqlExceptionHandler( ex, "btnWScreatedemoDB action event");
         }
     }
     
