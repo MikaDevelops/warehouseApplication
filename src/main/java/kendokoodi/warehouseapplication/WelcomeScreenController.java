@@ -74,21 +74,31 @@ public class WelcomeScreenController implements Initializable {
      */
     @FXML
     private void btnWScreatedemoDB(ActionEvent event) throws InterruptedException {
-        try {
-            // probably needs own thread to run -> todo
-            //progIndicatorWS.setVisible(true);
-            btnWScreate.setDisable(true);
+        
+        
+        new Thread( () -> {
+        
+            Platform.runLater(()-> progIndicatorWS.setVisible( true ));
+            
+            try {
+            
+            Platform.runLater(()-> btnWScreate.setDisable( true ));
+            
             createDemoDB();
-            //progIndicatorWS.setVisible(false);
-            lblWSmessage.setText("Demonstrational database created!");
-            btnContinue.setDisable(false);
             
+            Platform.runLater(()-> lblWSmessage.setText("Demonstrational database created!"));
+            Platform.runLater(()-> btnContinue.setDisable( false ));
+            Platform.runLater(()-> progIndicatorWS.setVisible( false ));
             
-        } catch (SQLException ex) {
-            Logger.getLogger(WelcomeScreenController.class.getName()).log(Level.SEVERE, null, ex);
-            lblWSmessage.setText("That didn't work out :(");
-            sqlExceptionHandler( ex, "btnWScreatedemoDB action event");
-        }
+            } catch (SQLException ex) {
+                Logger.getLogger(WelcomeScreenController.class.getName()).log(Level.SEVERE, null, ex);
+                lblWSmessage.setText("That didn't work out :(");
+                sqlExceptionHandler( ex, "btnWScreatedemoDB action event");
+                Platform.runLater(()-> progIndicatorWS.setVisible( false ));
+            }
+        
+        }).start();
+        
     }
     
     /**
