@@ -45,7 +45,7 @@ public class WelcomeScreenController implements Initializable {
     @FXML
     private void menuClose(ActionEvent event) {
         try {
-        deleteDemoDB();
+        deleteDB();
         } catch (SQLException ex){ sqlExceptionHandler(ex,
                 "welcomeScreen menuClose action event"); }
         Platform.exit();
@@ -82,7 +82,7 @@ public class WelcomeScreenController implements Initializable {
         
             try {
             
-                createDemoDB();
+                createDB();
             
                 Platform.runLater(()->{
                 

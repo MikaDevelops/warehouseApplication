@@ -105,7 +105,7 @@ public class MainViewController {
     @FXML
     private void menuMainClose(ActionEvent event) {
         try {
-        deleteDemoDB();
+        deleteDB();
         } catch (SQLException ex) { sqlExceptionHandler(ex,
                 "mainView menuMainClose action event"); }
         Platform.exit();

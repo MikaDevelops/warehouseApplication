@@ -34,10 +34,10 @@ public class MariaDBTest {
      * What is created into server can be found afterwards.
      */
     @org.junit.jupiter.api.Test
-    public void testCreateDemoDB() throws Exception {
+    public void testCreateDB() throws Exception {
         
         // luodaan demotietokanta
-        MariaDB.createDemoDB();
+        MariaDB.createDB();
         
         Connection c = MariaDB.openConnection();
         
@@ -52,7 +52,7 @@ public class MariaDBTest {
         String expectedResult = "DemoWarehouseApplicationDB";
         assertEquals(expectedResult, result);
         
-        MariaDB.deleteDemoDB();
+        MariaDB.deleteDB();
         ResultSet rs2 = s.executeQuery("SHOW DATABASES LIKE 'DemoWarehouseApplicationDB'");
         
         String result2;
@@ -75,7 +75,7 @@ public class MariaDBTest {
         
         // luodaan demotietokanta
 
-        MariaDB.createDemoDB();
+        MariaDB.createDB();
         
         // lisätään kantaan testitietue
         SerProdInfo testInfo = new SerProdInfo();
@@ -138,14 +138,14 @@ public class MariaDBTest {
         assertEquals( testInfo.positionID, result.positionID );
       
         // poistetaan demokanta
-        MariaDB.deleteDemoDB();
+        MariaDB.deleteDB();
         MariaDB.closeConnection (c);
         
     }
 
-    // tulee käytettyä joka testissä ja testattua createDemoDB testissä
+    // tulee käytettyä joka testissä ja testattua createDB testissä
 //    /**
-//     * Test of deleteDemoDB method, of class MariaDB.
+//     * Test of deleteDB method, of class MariaDB.
 //     */
 //    @org.junit.jupiter.api.Test
 //    public void testDeleteDemoDB() throws Exception {
@@ -162,7 +162,7 @@ public class MariaDBTest {
         int iDexpected = 1;
         
         // luodaan demotietokanta
-        MariaDB.createDemoDB();
+        MariaDB.createDB();
         Connection c = MariaDB.openConnection();
         Statement s = c.createStatement();
         s.execute("SET autocommit=1");
@@ -215,7 +215,7 @@ public class MariaDBTest {
         assertNotEquals(infoFromDB2.productID, iDexpected);
         
         // lopuksi pistetään pakka bittitaivaaseen.
-        MariaDB.deleteDemoDB();
+        MariaDB.deleteDB();
         
         MariaDB.closeConnection(c);
     }
@@ -225,7 +225,7 @@ public class MariaDBTest {
      */
     @org.junit.jupiter.api.Test
     public void testUpdateSerializedProduct() throws Exception {
-        MariaDB.createDemoDB();
+        MariaDB.createDB();
         Connection c = MariaDB.openConnection();
         Statement s = c.createStatement();
         s.execute("SET autocommit=1");
@@ -275,7 +275,7 @@ public class MariaDBTest {
         assertEquals(resultInfo.serialNo, newData.serialNo);
         assertEquals(resultInfo.warranty, newData.warranty);
         
-        MariaDB.deleteDemoDB();
+        MariaDB.deleteDB();
         MariaDB.closeConnection(c); 
     }
 
@@ -284,7 +284,7 @@ public class MariaDBTest {
      */
     @org.junit.jupiter.api.Test
     public void testGetSerializedProductData() throws Exception {
-        MariaDB.createDemoDB();
+        MariaDB.createDB();
         
         SerProdInfo expected = new SerProdInfo();
         
@@ -309,7 +309,7 @@ public class MariaDBTest {
         assertEquals(expected.isOwned,result.isOwned);
         assertEquals(expected.isInProduction,result.isInProduction);
         
-        MariaDB.deleteDemoDB();
+        MariaDB.deleteDB();
     }
 
     /**
@@ -317,7 +317,7 @@ public class MariaDBTest {
      */
     @org.junit.jupiter.api.Test
     public void testGetLeaseIDlist() throws Exception {
-        MariaDB.createDemoDB();
+        MariaDB.createDB();
         
         ArrayList result = MariaDB.getLeaseIDlist();
         ArrayList<String> expected = new ArrayList<>();
@@ -326,7 +326,7 @@ public class MariaDBTest {
         
         assertIterableEquals(expected, result);
         
-        MariaDB.deleteDemoDB();
+        MariaDB.deleteDB();
     }
 
     /**
@@ -334,7 +334,7 @@ public class MariaDBTest {
      */
     @org.junit.jupiter.api.Test
     public void testGetRoomIDlist() throws Exception {
-        MariaDB.createDemoDB();
+        MariaDB.createDB();
         
         ArrayList result = MariaDB.getRoomIDlist();
         ArrayList<String> expected = new ArrayList<>();
@@ -350,7 +350,7 @@ public class MariaDBTest {
         
         assertIterableEquals(expected, result);
         
-        MariaDB.deleteDemoDB();
+        MariaDB.deleteDB();
     }
 
     /**
@@ -358,7 +358,7 @@ public class MariaDBTest {
      */
     @org.junit.jupiter.api.Test
     public void testGetStorageIDlist() throws Exception {
-       MariaDB.createDemoDB();
+       MariaDB.createDB();
         
         ArrayList result = MariaDB.getStorageIDlist();
         ArrayList<String> expected = new ArrayList<>();
@@ -369,7 +369,7 @@ public class MariaDBTest {
         
         assertIterableEquals(expected, result);
         
-        MariaDB.deleteDemoDB();
+        MariaDB.deleteDB();
     }
 
     /**
@@ -378,7 +378,7 @@ public class MariaDBTest {
     @org.junit.jupiter.api.Test
     public void testListAllSerialized() throws Exception {
         
-        MariaDB.createDemoDB();
+        MariaDB.createDB();
         
         ArrayList<SerProdInfo> expected = new ArrayList<>();
         
@@ -459,7 +459,7 @@ public class MariaDBTest {
         assertEquals(expected.get(i).isOwned,result.get(i).isOwned);
         }
         
-        MariaDB.deleteDemoDB();
+        MariaDB.deleteDB();
 
     }
 
@@ -469,7 +469,7 @@ public class MariaDBTest {
     @org.junit.jupiter.api.Test
     public void testSearchSerialized() throws Exception {
         
-        MariaDB.createDemoDB();
+        MariaDB.createDB();
         
         ArrayList<SerProdInfo> expected = new ArrayList<>();
         SerProdInfo spi1 = new SerProdInfo();
@@ -510,7 +510,7 @@ public class MariaDBTest {
         assertEquals(expected.get(i).isOwned,result.get(i).isOwned);
         }
         
-        MariaDB.deleteDemoDB();
+        MariaDB.deleteDB();
     }
 
     /**

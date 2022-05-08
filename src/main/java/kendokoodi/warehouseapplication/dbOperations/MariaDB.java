@@ -41,26 +41,20 @@ public class MariaDB {
         if ( c != null ) { c.close(); } }
     
     /**
-     * createDemoDB creates a demo warehouse database.
+     * createDB creates a demo warehouse database.
      * <p>
-     * Executes a drop database query, which will delete DemoWarehouseApplicationDB
-     * named database if exists. Creates a new DemoWarehouseApplicationDB named database
-     * and adds some rows to it.
+     * Creates a new WarehouseApplicationDB named database.
      * @throws SQLException 
      */
-    public static void createDemoDB () throws SQLException {
+    public static void createDB () throws SQLException {
         Connection c = openConnection();
         Statement stmt = c.createStatement();
         
         stmt.execute("SET autocommit=1");
         
-      //  stmt.execute( "DROP DATABASE IF EXISTS DemoWarehouseApplicationDB" );
-        deleteDemoDB();
-      
         stmt.execute( "CREATE DATABASE IF NOT EXISTS DemoWarehouseApplicationDB" );
         
         stmt.execute( "USE DemoWarehouseApplicationDB" );
-        
         
         stmt.execute( "CREATE TABLE Room("
 //          +"building VARCHAR(50) NOT NULL,"
@@ -222,10 +216,10 @@ public class MariaDB {
     }
     
     /**
-     * deleteDemoDB() deletes demonstrational warehouse database.
+     * deleteDB() deletes demonstrational warehouse database.
      * @throws SQLException 
      */
-    public static void deleteDemoDB() throws SQLException {
+    public static void deleteDB() throws SQLException {
         Connection c = openConnection();
         Statement stmt = c.createStatement();
         stmt.execute("SET autocommit=1");
