@@ -82,7 +82,7 @@ public class WelcomeScreenController implements Initializable {
         
             try {
             
-                createDB();
+                createDB( "testDB" );
             
                 Platform.runLater(()->{
                 

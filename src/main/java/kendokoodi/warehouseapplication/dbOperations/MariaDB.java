@@ -46,15 +46,21 @@ public class MariaDB {
      * Creates a new WarehouseApplicationDB named database.
      * @throws SQLException 
      */
-    public static void createDB () throws SQLException {
+    public static void createDB ( String dbName ) throws SQLException {
+        
         Connection c = openConnection();
         Statement stmt = c.createStatement();
         
         stmt.execute("SET autocommit=1");
         
-        stmt.execute( "CREATE DATABASE IF NOT EXISTS DemoWarehouseApplicationDB" );
+//        PreparedStatement pstmt = c.prepareStatement(
+//            "CREATE DATABASE IF NOT EXISTS ?");
+//        pstmt.setString(1, dbName);
+//        pstmt.execute();
         
-        stmt.execute( "USE DemoWarehouseApplicationDB" );
+        stmt.execute( "CREATE DATABASE IF NOT EXISTS testDB" );
+        
+        stmt.execute( "USE testDB" );
         
         stmt.execute( "CREATE TABLE Room("
 //          +"building VARCHAR(50) NOT NULL,"
@@ -176,6 +182,7 @@ public class MariaDB {
 //        +"VALUES(1,'M1-A1'),(2,'M1-A1'),(3,'M1-A1')" );
 
         stmt.close();
+        //pstmt.close();
         closeConnection( c );
     }
     
@@ -212,6 +219,7 @@ public class MariaDB {
         pstmt.execute();
         //stmt.execute("COMMIT");
         stmt.close();
+        pstmt.close();
         closeConnection ( c );
     }
     
@@ -223,7 +231,7 @@ public class MariaDB {
         Connection c = openConnection();
         Statement stmt = c.createStatement();
         stmt.execute("SET autocommit=1");
-        stmt.executeQuery("DROP DATABASE IF EXISTS DemoWarehouseApplicationDB");
+        stmt.executeQuery("DROP DATABASE IF EXISTS testDB");
         stmt.close();
         closeConnection(c);
     }

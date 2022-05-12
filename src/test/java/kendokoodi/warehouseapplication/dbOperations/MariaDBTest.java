@@ -30,14 +30,14 @@ public class MariaDBTest {
 //    }
 
     /**
-     * Test of createDemoDB method, of class MariaDB.
+     * Test of createDB method, of class MariaDB.
      * What is created into server can be found afterwards.
      */
     @org.junit.jupiter.api.Test
     public void testCreateDB() throws Exception {
         
         // luodaan demotietokanta
-        MariaDB.createDB();
+        MariaDB.createDB( "testDB" );
         
         Connection c = MariaDB.openConnection();
         
@@ -45,15 +45,15 @@ public class MariaDBTest {
         
         s.execute("SET autocommit=1");
         
-        ResultSet rs = s.executeQuery("SHOW DATABASES LIKE 'DemoWarehouseApplicationDB'");
+        ResultSet rs = s.executeQuery("SHOW DATABASES LIKE 'testDB'");
         
         rs.first();
         String result = rs.getString(1);
-        String expectedResult = "DemoWarehouseApplicationDB";
+        String expectedResult = "testDB";
         assertEquals(expectedResult, result);
         
         MariaDB.deleteDB();
-        ResultSet rs2 = s.executeQuery("SHOW DATABASES LIKE 'DemoWarehouseApplicationDB'");
+        ResultSet rs2 = s.executeQuery("SHOW DATABASES LIKE 'testDB'");
         
         String result2;
         if (rs2.next()){
@@ -75,7 +75,7 @@ public class MariaDBTest {
         
         // luodaan demotietokanta
 
-        MariaDB.createDB();
+        MariaDB.createDB( "testDB" );
         
         // lisätään kantaan testitietue
         SerProdInfo testInfo = new SerProdInfo();
@@ -98,7 +98,7 @@ public class MariaDBTest {
         Connection c = MariaDB.openConnection();
         Statement s = c.createStatement();
         s.execute("SET autocommit=1");
-        s.execute("USE DemoWarehouseApplicationDB");
+        s.execute("USE testDB");
         
         // haetaan tietuetta
         ResultSet rs = s.executeQuery("SELECT * FROM SerializedProduct "
@@ -162,7 +162,7 @@ public class MariaDBTest {
         int iDexpected = 1;
         
         // luodaan demotietokanta
-        MariaDB.createDB();
+        MariaDB.createDB( "testDB" );
         Connection c = MariaDB.openConnection();
         Statement s = c.createStatement();
         s.execute("SET autocommit=1");
@@ -225,7 +225,7 @@ public class MariaDBTest {
      */
     @org.junit.jupiter.api.Test
     public void testUpdateSerializedProduct() throws Exception {
-        MariaDB.createDB();
+        MariaDB.createDB( "testDB" );
         Connection c = MariaDB.openConnection();
         Statement s = c.createStatement();
         s.execute("SET autocommit=1");
@@ -284,7 +284,7 @@ public class MariaDBTest {
      */
     @org.junit.jupiter.api.Test
     public void testGetSerializedProductData() throws Exception {
-        MariaDB.createDB();
+        MariaDB.createDB( "testDB" );
         
         SerProdInfo expected = new SerProdInfo();
         
@@ -317,7 +317,7 @@ public class MariaDBTest {
      */
     @org.junit.jupiter.api.Test
     public void testGetLeaseIDlist() throws Exception {
-        MariaDB.createDB();
+        MariaDB.createDB( "testDB" );
         
         ArrayList result = MariaDB.getLeaseIDlist();
         ArrayList<String> expected = new ArrayList<>();
@@ -334,7 +334,7 @@ public class MariaDBTest {
      */
     @org.junit.jupiter.api.Test
     public void testGetRoomIDlist() throws Exception {
-        MariaDB.createDB();
+        MariaDB.createDB( "testDB" );
         
         ArrayList result = MariaDB.getRoomIDlist();
         ArrayList<String> expected = new ArrayList<>();
@@ -358,7 +358,7 @@ public class MariaDBTest {
      */
     @org.junit.jupiter.api.Test
     public void testGetStorageIDlist() throws Exception {
-       MariaDB.createDB();
+       MariaDB.createDB( "testDB" );
         
         ArrayList result = MariaDB.getStorageIDlist();
         ArrayList<String> expected = new ArrayList<>();
@@ -378,7 +378,7 @@ public class MariaDBTest {
     @org.junit.jupiter.api.Test
     public void testListAllSerialized() throws Exception {
         
-        MariaDB.createDB();
+        MariaDB.createDB( "testDB" );
         
         ArrayList<SerProdInfo> expected = new ArrayList<>();
         
@@ -469,7 +469,7 @@ public class MariaDBTest {
     @org.junit.jupiter.api.Test
     public void testSearchSerialized() throws Exception {
         
-        MariaDB.createDB();
+        MariaDB.createDB( "testDB" );
         
         ArrayList<SerProdInfo> expected = new ArrayList<>();
         SerProdInfo spi1 = new SerProdInfo();
