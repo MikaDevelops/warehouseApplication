@@ -1,0 +1,8 @@
+source: btnWScreatedemoDB action event;
+2022-05-23T18:24:59.249627;
+State: 07004;
+Error code: -1;
+Message: (conn=223) Parameter at position 1 is not set;
+Cause: ;
+
+

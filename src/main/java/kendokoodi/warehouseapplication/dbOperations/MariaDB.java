@@ -19,15 +19,15 @@ import kendokoodi.warehouseapplication.App;
  */
 public class MariaDB {
     
-    private static final String connectionString = 
-            "jdbc:mariadb://localhost:3306?user=kayttaja&password=pjger903lk43";
+    //private static final String connectionString = 
+    //        "jdbc:mariadb://localhost:3306?user=kayttaja&password=pjger903lk43";
     
     /**
      * Opens connection to database and returns Connection
      * @return  Returns Connection
      * @throws SQLException 
      */
-    public static Connection openConnection ( ) throws SQLException {
+    public static Connection openConnection ( String connectionString ) throws SQLException {
         Connection connection = DriverManager.getConnection ( connectionString );
         return connection;
     }
@@ -46,19 +46,18 @@ public class MariaDB {
      * Creates a new WarehouseApplicationDB named database.
      * @throws SQLException 
      */
-    public static void createDB ( String dbName ) throws SQLException {
+    public static void createDB () throws SQLException {
         
+
         Connection c = openConnection();
         Statement stmt = c.createStatement();
+
         
         stmt.execute("SET autocommit=1");
         
-//        PreparedStatement pstmt = c.prepareStatement(
-//            "CREATE DATABASE IF NOT EXISTS ?");
-//        pstmt.setString(1, dbName);
-//        pstmt.execute();
+        stmt.execute("");
         
-        stmt.execute( "CREATE DATABASE IF NOT EXISTS testDB" );
+        stmt.execute( "CREATE DATABASE IF NOT EXISTS warehouseDB" );
         
         stmt.execute( "USE testDB" );
         
@@ -139,50 +138,9 @@ public class MariaDB {
         stmt.execute("INSERT INTO Leasing (LeaseTime, leasingCompany, contractNo, leaseStartDate)"
         +"VALUES(60,'3StepIT', 'L200220145','2022-02-21'),(36,'IT-solutions','ew38-22','2018-09-01')" );
         //stmt.execute("COMMIT");
-        
-        
-        stmt.executeQuery("INSERT INTO Room (roomID)"
-        +"VALUES"
-        +"('M100'),"
-        +"('M101'),"
-        +"('M102'),"
-        +"('M103'),"
-        +"('M104'),"
-        +"('M105'),"
-        +"('M106'),"
-        +"('M107')"
-        );
-        //stmt.execute("COMMIT");
-        
-        
-        stmt.execute("INSERT INTO SerializedProduct (productNo, serialNo, manufacturer, name, warranty, isOwned, isInProduction)"
-        +"VALUES" 
-        +"('60-1382-01','ASDFGHJKL1','Extron','DTP CrossPoint 86 4K',24,0,0),"
-        +"('60-1625-01','QWERTY6','Extron','DTP T SW4 HD 4K',12,0,1),"
-        +"('60-1594-01','POIUYTT357','Extron','SMP 111',24,0,1),"
-        +"('6511006','tyrieruw844','Crestron','DM-NVX-360',12,1,1),"
-        +"(NULL,'wowowow2','Shure','SM58 Microphone',12,1,1)"
-        );
-        //stmt.execute("COMMIT");
 
-        //stmt.executeQuery("INSERT INTO StoreRoom (storeRoomID, grossFloorArea, roomHeight)"
-        //+"VALUES('128',9.0,2.5) " );
-        
-       
-        stmt.execute("INSERT INTO StoragePosition (positionID) "
-        +"VALUES"
-        +"('M1-A1'),('M1-A2'),('M1-A3')" );
-        //stmt.execute("COMMIT");
-
-//        stmt.executeQuery("INSERT INTO Accessory (name,quantity) "
-//        +"VALUES('Yleisruuvi PROF uppokanta Zn T30 6x160mm',300),"
-//        +"('Switchcraft Open 1/4” Stereo Jack',12),('Kramer HDMI-kaapeli 3m',5)" );
-
-//        stmt.executeQuery("INSERT INTO AccessoryPos (accessoryID, positionID) "
-//        +"VALUES(1,'M1-A1'),(2,'M1-A1'),(3,'M1-A1')" );
 
         stmt.close();
-        //pstmt.close();
         closeConnection( c );
     }
     
@@ -217,7 +175,6 @@ public class MariaDB {
         pstmt.setString(10, serProd.positionID);
         
         pstmt.execute();
-        //stmt.execute("COMMIT");
         stmt.close();
         pstmt.close();
         closeConnection ( c );
