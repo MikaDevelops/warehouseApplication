@@ -66,7 +66,7 @@ CREATE TABLE Orders
   PRIMARY KEY (orderID)
 );
 
-CREATE TABLE Vendor
+CREATE TABLE Vendors
 (
   vendorID INT NOT NULL AUTO_INCREMENT,
   companyName VARCHAR(80) NOT NULL,

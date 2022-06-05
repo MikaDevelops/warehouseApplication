@@ -6,4 +6,5 @@ module kendokoodi.warehouseapplication {
 
     opens kendokoodi.warehouseapplication to javafx.fxml;
     exports kendokoodi.warehouseapplication;
+    requires json.simple;
 }

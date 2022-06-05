@@ -37,6 +37,7 @@ public class DataDefinitionTest {
     public void testCreateDatabase() {
         DataDefinition dataDefinition = new DataDefinition ("kayttaja","pjger903lk43");
         dataDefinition.createDatabase();
+        
     }
     
 }

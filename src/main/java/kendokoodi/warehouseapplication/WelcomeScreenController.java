@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.stage.Stage;
+import kendokoodi.warehouseapplication.dbOperations.DataDefinition;
 import static kendokoodi.warehouseapplication.dbOperations.MariaDB.*;
 
 /**
@@ -81,8 +82,8 @@ public class WelcomeScreenController implements Initializable {
         new Thread( () -> {
         
             try {
-            
-                createDB(  );
+                DataDefinition dataDefinition = new DataDefinition("kayttaja","pjger903lk43");
+                dataDefinition.createDatabase();
             
                 Platform.runLater(()->{
                 

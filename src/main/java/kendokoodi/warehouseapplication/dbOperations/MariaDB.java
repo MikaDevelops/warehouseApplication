@@ -1,5 +1,8 @@
 package kendokoodi.warehouseapplication.dbOperations;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,6 +12,9 @@ import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import kendokoodi.warehouseapplication.App;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  * kendokoodi.warehouseapplication.dbOperations.MariaDB is a class
@@ -27,8 +33,13 @@ public class MariaDB {
      * @return  Returns Connection
      * @throws SQLException 
      */
-    public static Connection openConnection ( String connectionString ) throws SQLException {
-        Connection connection = DriverManager.getConnection ( connectionString );
+    public static Connection openConnection() throws SQLException, FileNotFoundException, IOException, ParseException {
+        Object object = new JSONParser().parse(new FileReader("dataBaseUser.json"));
+        JSONObject jsonObject = (JSONObject) object;
+        String user = (String) jsonObject.get("user");
+        jsonObject = null;
+        Connection connection = DriverManager.getConnection ( 
+        "jdbc:mariadb://localhost:3306?user=" + user );
         return connection;
     }
     
@@ -46,7 +57,7 @@ public class MariaDB {
      * Creates a new WarehouseApplicationDB named database.
      * @throws SQLException 
      */
-    public static void createDB () throws SQLException {
+    /*public static void createDB () throws SQLException {
         
 
         Connection c = openConnection();
@@ -142,7 +153,7 @@ public class MariaDB {
 
         stmt.close();
         closeConnection( c );
-    }
+    } */
     
     /**
      * Adds a serialized product to database.
