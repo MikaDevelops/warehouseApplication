@@ -13,8 +13,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import kendokoodi.warehouseapplication.dbOperations.DataDefinition;
 import static kendokoodi.warehouseapplication.dbOperations.MariaDB.*;
@@ -26,17 +30,29 @@ import static kendokoodi.warehouseapplication.dbOperations.MariaDB.*;
 public class WelcomeScreenController implements Initializable {
     
     @FXML
+    private BorderPane bPaneWelcome;
+
+    @FXML
+    private ComboBox<?> cmbDatabases;
+
+    
+    @FXML
     private Label lblWSmessage;
+    
+    @FXML
+    private Button btnCreateDB;
     
     @FXML
     private Button btnWScreate;
     
     @FXML
-    private ProgressIndicator progIndicatorWS;
-    
-    @FXML
-    private Button btnContinue;
+    private TextField txtDBaddress;
 
+    @FXML
+    private PasswordField txtRootPassword;
+
+    @FXML
+    private TextField txtRootUserName;
 
     /**
      * Action event handler for menu close. Deletes demo database and
@@ -69,40 +85,26 @@ public class WelcomeScreenController implements Initializable {
     }
     
     /**
-     * Action event handler for demo database creation button.
+     * Action event handler to change to create database view.
      * @param event
      * @throws InterruptedException 
      */
     @FXML
-    private void btnWScreatedemoDB(ActionEvent event) throws InterruptedException {
-        
-        progIndicatorWS.setVisible( true );
-        btnWScreate.setDisable( true );
-        
-        new Thread( () -> {
-        
-            try {
-                DataDefinition dataDefinition = new DataDefinition("kayttaja","pjger903lk43");
-                dataDefinition.createDatabase();
-            
-                Platform.runLater(()->{
-                
-                    lblWSmessage.setText("Demonstrational database created!");
-                    btnContinue.setDisable( false );
-                    progIndicatorWS.setVisible( false );
-                
-            });
-            
-            } catch (SQLException ex) {
-                
-                lblWSmessage.setText("That didn't work out :(");
-                sqlExceptionHandler( ex, "btnWScreatedemoDB action event");
-                Platform.runLater(()-> progIndicatorWS.setVisible( false ));
-                
-            }
-        
-        }).start();
-        
+    private void btnWScreate(ActionEvent event) throws InterruptedException {
+        try {
+            bPaneWelcome.setCenter(App.loadFXML("createDB"));
+        } catch (IOException ex) {
+            Logger.getLogger(WelcomeScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * Action event handler for create database button. 
+     * @param event 
+     */
+    @FXML
+    private void btnCreateDBaction(ActionEvent event) {
+
     }
     
     /**
@@ -111,13 +113,10 @@ public class WelcomeScreenController implements Initializable {
      * @throws IOException 
      */
     @FXML
-    private void btnWScontinue(ActionEvent event) throws IOException {
-        App.setRoot("mainView");
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        progIndicatorWS.setVisible(false);
+
     }
 
 

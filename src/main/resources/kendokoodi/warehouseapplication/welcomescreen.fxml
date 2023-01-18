@@ -7,11 +7,10 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kendokoodi.warehouseapplication.WelcomeScreenController">
+<BorderPane fx:id="bPaneWelcome" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kendokoodi.warehouseapplication.WelcomeScreenController">
    <center>
       <VBox alignment="CENTER" prefHeight="180.0" prefWidth="300.0" BorderPane.alignment="CENTER">
          <children>
@@ -20,7 +19,7 @@
                   <Insets />
                </opaqueInsets>
             </Label>
-            <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="169.0" text="Create new database">
+            <Button mnemonicParsing="false" onAction="#btnWScreate" prefHeight="30.0" prefWidth="169.0" text="Create new database">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -29,7 +28,6 @@
                </VBox.margin>
             </Button>
             <ComboBox fx:id="cmbDatabases" prefHeight="32.0" prefWidth="216.0" promptText="Select existing database" />
-            <ProgressIndicator fx:id="progIndicatorWS" prefHeight="28.0" prefWidth="30.0" visible="true" />
          </children>
       </VBox>
    </center>

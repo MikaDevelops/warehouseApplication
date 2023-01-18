@@ -6,3 +6,11 @@ Message: (conn=223) Parameter at position 1 is not set;
 Cause: ;
 
 
+source: welcomeScreen menuClose action event;
+2023-01-18T23:00:15.895816;
+State: 42000;
+Error code: 1044;
+Message: (conn=36) Access denied for user 'warehouseBasicUser'@'localhost' to database 'testDB';
+Cause: ;
+
+
