@@ -1,5 +1,6 @@
 package kendokoodi.warehouseapplication;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -20,6 +21,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import static kendokoodi.warehouseapplication.dbOperations.MariaDB.*;
 import kendokoodi.warehouseapplication.dbOperations.SerProdInfo;
+import org.json.simple.parser.ParseException;
 
 /**
  * Controller for editView. View is for editing existing records of
@@ -39,7 +41,7 @@ public class EditViewController implements Initializable {
      * variable as productID.
      * @throws SQLException
      */
-    public void bindData () throws SQLException{
+    public void bindData () throws SQLException, IOException, FileNotFoundException, ParseException{
         
         // Load data from database
         SerProdInfo data = getSerializedProductData(id);
@@ -145,7 +147,7 @@ public class EditViewController implements Initializable {
      * @param event 
      */
     @FXML
-    private void radLeaseAction(ActionEvent event) {
+    private void radLeaseAction(ActionEvent event) throws IOException, FileNotFoundException, ParseException {
         try {
         if (radLease.isSelected()){
         cboLeaseId.setDisable(false);
@@ -185,7 +187,7 @@ public class EditViewController implements Initializable {
      * @param event
      */
     @FXML
-    private void radInProductionAction(ActionEvent event) {
+    private void radInProductionAction(ActionEvent event) throws IOException, FileNotFoundException, ParseException {
         try {
         if (radInProduction.isSelected()){
         cboRoomId.setDisable(false);
@@ -205,7 +207,7 @@ public class EditViewController implements Initializable {
      * @param event
      */
     @FXML
-    private void radInStorageAction(ActionEvent event) {
+    private void radInStorageAction(ActionEvent event) throws IOException, FileNotFoundException, ParseException {
         
         try {
         if (radInStorage.isSelected()){
@@ -226,7 +228,7 @@ public class EditViewController implements Initializable {
      * @throws IOException 
      */
     @FXML
-    private void btnCloseAndSave(ActionEvent event) throws IOException {
+    private void btnCloseAndSave(ActionEvent event) throws IOException, FileNotFoundException, ParseException {
         
         // Hide attention labels (just in case this is a re-run)
         lblAttLease.setVisible(false);
@@ -324,7 +326,7 @@ public class EditViewController implements Initializable {
      * @throws IOException 
      */
     @FXML
-    private void btnDelete(ActionEvent event) throws IOException {
+    private void btnDelete(ActionEvent event) throws IOException, FileNotFoundException, ParseException {
         try {
         if (chkDelete.isSelected()){
         deleteRecord(id);
@@ -342,7 +344,11 @@ public class EditViewController implements Initializable {
             
         } catch (SQLException ex) {
             sqlExceptionHandler(ex, "EditViewController initialize bindData");
-            }
+            } catch (IOException ex) {
+            Logger.getLogger(EditViewController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(EditViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

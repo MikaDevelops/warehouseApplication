@@ -1,5 +1,6 @@
 package kendokoodi.warehouseapplication;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 import static kendokoodi.warehouseapplication.dbOperations.MariaDB.*;
 import kendokoodi.warehouseapplication.dbOperations.SerProdInfo;
+import org.json.simple.parser.ParseException;
 
 
 /**
@@ -104,10 +106,10 @@ public class MainViewController {
      */
     @FXML
     private void menuMainClose(ActionEvent event) {
-        try {
-        deleteDB();
-        } catch (SQLException ex) { sqlExceptionHandler(ex,
-                "mainView menuMainClose action event"); }
+//        try {
+//        //deleteDB();
+//        } catch (SQLException ex) { sqlExceptionHandler(ex,
+//                "mainView menuMainClose action event"); }
         Platform.exit();
         System.exit(0);
     }
@@ -130,7 +132,7 @@ public class MainViewController {
      * @param event 
      */
     @FXML
-    private void btnMainListAllAction(ActionEvent event) {
+    private void btnMainListAllAction(ActionEvent event) throws IOException, FileNotFoundException, ParseException {
         try {
         ArrayList<SerProdInfo> result = listAllSerialized();
         ObservableList ol = FXCollections.observableArrayList( result );
@@ -159,7 +161,7 @@ public class MainViewController {
      * @param event 
      */
     @FXML
-    private void btnMainSearchAction(ActionEvent event) {
+    private void btnMainSearchAction(ActionEvent event) throws IOException, FileNotFoundException, ParseException {
         
         String inputText = txtFieldMainSearch.getText();
         
@@ -217,7 +219,7 @@ public class MainViewController {
      * @param event 
      */
     @FXML
-    private void btnSaveAdd(ActionEvent event) {
+    private void btnSaveAdd(ActionEvent event) throws IOException, FileNotFoundException, ParseException {
         
         // New instance of SerProdInfo.
         SerProdInfo formInfo = new SerProdInfo();
@@ -334,7 +336,7 @@ public class MainViewController {
      * @param event
      */
     @FXML
-    private void chkLeaseAddAction(ActionEvent event) {
+    private void chkLeaseAddAction(ActionEvent event) throws IOException, FileNotFoundException, ParseException {
         try {
         if (chkLeaseAdd.isSelected()){
             cmbBoxLease.setDisable(false);
@@ -358,7 +360,7 @@ public class MainViewController {
      * @param event
      */	
     @FXML
-    private void radInProductionAction(ActionEvent event) {
+    private void radInProductionAction(ActionEvent event) throws IOException, FileNotFoundException, ParseException {
     	try {
         if (radInProduction.isSelected()) {
     		cmbBoxStorage.setDisable(true);
@@ -379,7 +381,7 @@ public class MainViewController {
      * @param event
      */
     @FXML
-    private void radProductInStorageAction(ActionEvent event) {
+    private void radProductInStorageAction(ActionEvent event) throws IOException, FileNotFoundException, ParseException {
     	try {
         if (radInStorage.isSelected()) {
     		cmbBoxRoom.setDisable(true);

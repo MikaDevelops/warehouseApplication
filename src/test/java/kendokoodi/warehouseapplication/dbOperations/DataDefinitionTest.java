@@ -35,9 +35,9 @@ public class DataDefinitionTest {
      */
     @Test
     public void testCreateDatabase() {
-        DataDefinition dataDefinition = new DataDefinition ("kayttaja","pjger903lk43");
-        dataDefinition.createDatabase();
-        
+        DataDefinition dataDefinition = new DataDefinition ("localhost","kayttaja","pjger903lk43");
+        boolean response = dataDefinition.createDatabase();
+        assertTrue(response);
     }
     
 }

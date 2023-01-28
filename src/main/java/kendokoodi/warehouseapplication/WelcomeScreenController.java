@@ -61,10 +61,10 @@ public class WelcomeScreenController implements Initializable {
      */
     @FXML
     private void menuClose(ActionEvent event) {
-        try {
-        deleteDB();
-        } catch (SQLException ex){ sqlExceptionHandler(ex,
-                "welcomeScreen menuClose action event"); }
+//        try {
+//        //deleteDB();
+//        } catch (SQLException ex){ sqlExceptionHandler(ex,
+//                "welcomeScreen menuClose action event"); }
         Platform.exit();
         System.exit(0);
         

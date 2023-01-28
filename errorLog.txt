@@ -14,3 +14,62 @@ Message: (conn=36) Access denied for user 'warehouseBasicUser'@'localhost' to da
 Cause: ;
 
 
+source: createDB DataDefinition Open connection;
+2023-01-28T17:52:34.409977;
+State: null;
+Error code: 0;
+Message: java.sql.SQLException: (conn=39) Can't create database 'warehouseApplicationDB'; database exists;
+Cause: java.sql.SQLException: (conn=39) Can't create database 'warehouseApplicationDB'; database exists;
+;
+
+
+source: createDB DataDefinition Open connection;
+2023-01-28T17:52:34.469822;
+State: HY000;
+Error code: 1007;
+Message: (conn=39) Can't create database 'warehouseApplicationDB'; database exists;
+Cause: ;
+
+
+source: createDB DataDefinition Open connection;
+2023-01-28T18:04:49.941382;
+State: null;
+Error code: 0;
+Message: java.sql.SQLException: (conn=43) Can't create database 'warehouseApplicationDB'; database exists;
+Cause: java.sql.SQLException: (conn=43) Can't create database 'warehouseApplicationDB'; database exists;
+;
+
+
+source: createDB DataDefinition Open connection;
+2023-01-28T18:04:50.003164;
+State: HY000;
+Error code: 1007;
+Message: (conn=43) Can't create database 'warehouseApplicationDB'; database exists;
+Cause: ;
+
+
+source: createDB DataDefinition Open connection;
+2023-01-28T18:13:32.335428;
+State: 28000;
+Error code: 1698;
+Message: (conn=45) Access denied for user 'kayttajat'@'localhost';
+Cause: ;
+
+
+source: createDB DataDefinition Open connection;
+2023-01-28T18:14:05.348491;
+State: null;
+Error code: 0;
+Message: java.sql.SQLException: (conn=47) Can't create database 'warehouseApplicationDB'; database exists;
+Cause: java.sql.SQLException: (conn=47) Can't create database 'warehouseApplicationDB'; database exists;
+;
+
+
+source: createDB DataDefinition Open connection;
+2023-01-28T18:14:05.399571;
+State: HY000;
+Error code: 1007;
+Message: (conn=47) Can't create database 'warehouseApplicationDB'; database exists;
+Cause: ;
+
+

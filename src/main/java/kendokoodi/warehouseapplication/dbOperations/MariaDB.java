@@ -37,9 +37,11 @@ public class MariaDB {
         Object object = new JSONParser().parse(new FileReader("dataBaseUser.json"));
         JSONObject jsonObject = (JSONObject) object;
         String user = (String) jsonObject.get("user");
+        String dbAddr = (String) jsonObject.get("dataBaseAddress");
+        String port = (String) jsonObject.get("dataBasePort");
         jsonObject = null;
         Connection connection = DriverManager.getConnection ( 
-        "jdbc:mariadb://localhost:3306?user=" + user );
+        "jdbc:mariadb://" + dbAddr + ":" + port + "?user=" + user );
         return connection;
     }
     
@@ -160,7 +162,7 @@ public class MariaDB {
      * @param serProd object containing attributes of a serialized product.
      * @throws SQLException 
      */
-    public static void addSerializedProduct( SerProdInfo serProd ) throws SQLException {
+    public static void addSerializedProduct( SerProdInfo serProd ) throws SQLException, IOException, FileNotFoundException, ParseException {
         
         Connection c = openConnection();
         Statement stmt = c.createStatement();
@@ -195,7 +197,7 @@ public class MariaDB {
      * deleteDB() deletes demonstrational warehouse database.
      * @throws SQLException 
      */
-    public static void deleteDB() throws SQLException {
+    public static void deleteDB() throws SQLException, IOException, FileNotFoundException, ParseException {
         Connection c = openConnection();
         Statement stmt = c.createStatement();
         stmt.execute("SET autocommit=1");
@@ -209,7 +211,7 @@ public class MariaDB {
      * @param id product id (record key) to be deleted.
      * @throws SQLException 
      */
-    public static void deleteRecord(int id) throws SQLException{
+    public static void deleteRecord(int id) throws SQLException, IOException, FileNotFoundException, ParseException{
         Connection c = openConnection();
         Statement stmt = c.createStatement();
         stmt.execute("SET autocommit=1");
@@ -225,7 +227,7 @@ public class MariaDB {
      * @param serializedProduct data to be updated to database.
      * @throws SQLException 
      */
-    public static void updateSerializedProduct( SerProdInfo serializedProduct ) throws SQLException {
+    public static void updateSerializedProduct( SerProdInfo serializedProduct ) throws SQLException, IOException, FileNotFoundException, ParseException {
         Connection c = openConnection();
         Statement stmt = c.createStatement();
         stmt.execute("SET autocommit=1");
@@ -263,7 +265,7 @@ public class MariaDB {
      * @return product information from database
      * @throws SQLException 
      */
-    public static SerProdInfo getSerializedProductData(int prodID) throws SQLException{
+    public static SerProdInfo getSerializedProductData(int prodID) throws SQLException, IOException, FileNotFoundException, ParseException{
         Connection c = openConnection();
         Statement stmt = c.createStatement();
         stmt.execute("SET autocommit=1");
@@ -303,7 +305,7 @@ public class MariaDB {
      * @return ArrayList of lease IDs
      * @throws SQLException 
      */
-    public static ArrayList<String> getLeaseIDlist() throws SQLException{
+    public static ArrayList<String> getLeaseIDlist() throws SQLException, IOException, FileNotFoundException, ParseException{
         
         ArrayList<String> leaseIdList = new ArrayList<>();
         
@@ -331,7 +333,7 @@ public class MariaDB {
      * @return ArrayList of room ID.
      * @throws SQLException 
      */
-    public static ArrayList<String> getRoomIDlist() throws SQLException{
+    public static ArrayList<String> getRoomIDlist() throws SQLException, IOException, FileNotFoundException, ParseException{
         
         ArrayList<String> roomIdList = new ArrayList<>();
         
@@ -360,7 +362,7 @@ public class MariaDB {
      * @return ArrayList of storage positions.
      * @throws SQLException 
      */
-    public static ArrayList<String> getStorageIDlist() throws SQLException {
+    public static ArrayList<String> getStorageIDlist() throws SQLException, IOException, FileNotFoundException, ParseException {
         
         ArrayList<String> storageIdList = new ArrayList<>();
         
@@ -388,7 +390,7 @@ public class MariaDB {
      * @return ArrayList of SerProd object containing all products from database.
      * @throws SQLException 
      */
-    public static ArrayList<SerProdInfo> listAllSerialized() throws SQLException{
+    public static ArrayList<SerProdInfo> listAllSerialized() throws SQLException, IOException, FileNotFoundException, ParseException{
         ArrayList<SerProdInfo> serProdInfo = new ArrayList<>();
         
         Connection c = openConnection();
@@ -432,7 +434,7 @@ public class MariaDB {
      * @return ArrayList of SerProdInfo objects containing search results.
      * @throws SQLException
      */
-    public static ArrayList<SerProdInfo> searchSerialized( String searchString, int searchBase ) throws SQLException {
+    public static ArrayList<SerProdInfo> searchSerialized( String searchString, int searchBase ) throws SQLException, IOException, FileNotFoundException, ParseException {
         
         ArrayList<SerProdInfo> serProdInfo = new ArrayList<>();
         String base;

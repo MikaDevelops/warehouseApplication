@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
@@ -17,20 +18,23 @@ import org.json.simple.parser.*;
 
 /**
  * Data Definition Language methods for creating and deleting WarehouseApplication
- * database
+ * database.
  * @author mika
  */
 public class DataDefinition {
     
-    // instance should have valid admin and password
+    // Instance should have valid admin and password
+    // and address to database server.
+    private String dataBaseAddress;
     private String admin;
     private String password;
     private String user;
     
     // constructor for class instance.
-    public DataDefinition ( String admin, String password ){
-        this.admin      = admin;
-        this.password   = password;
+    public DataDefinition ( String database, String admin, String password ){
+        this.dataBaseAddress    = database;
+        this.admin              = admin;
+        this.password           = password;
     }
     
     // Method to create a string from sql-file.
@@ -39,7 +43,7 @@ public class DataDefinition {
         String sqlString = "";
         try{
             
-            File sqlStringFile = new File ( "createDatabaseSQL.sql" );
+            File sqlStringFile = new File ( "databaseCreate.sql" );
             Scanner reader = new Scanner ( sqlStringFile );
             while (reader.hasNextLine()){
                 sqlString = sqlString + " " + reader.nextLine();
@@ -81,7 +85,7 @@ public class DataDefinition {
         }
     }
     
-    public void createDatabase(){
+    public boolean createDatabase(){
         
         // read sql-script from file
         String[] sqlString = getCreateSQLstring();
@@ -129,15 +133,20 @@ public class DataDefinition {
         // grant sufficient privileges to database
             stmt.execute( "GRANT SELECT,INSERT,UPDATE,DELETE ON warehouseApplicationDB.* "
             + "TO '" + this.user +"'@'localhost'");
+
             closeStatement( stmt );
             closeConnection ( c );
             
+            return true;
+            
             }catch( SQLException e ){
                 e.printStackTrace();
+                return false;
             }
             
         }else {
             System.out.println("no sql string returned by createDatabase method");
+            return false;
         }
     }
 }
