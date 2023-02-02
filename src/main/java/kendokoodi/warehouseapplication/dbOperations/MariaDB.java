@@ -28,6 +28,10 @@ public class MariaDB {
     //private static final String connectionString = 
     //        "jdbc:mariadb://localhost:3306?user=kayttaja&password=pjger903lk43";
     
+    private String dataBaseAddress;
+    private String dataBasePort;
+    private String dataBaseUser;
+    
     /**
      * Opens connection to database and returns Connection
      * @return  Returns Connection
@@ -52,7 +56,6 @@ public class MariaDB {
      */
     public static void closeConnection( Connection c ) throws SQLException {
         if ( c != null ) { c.close(); } }
-    
     
     
     /**
