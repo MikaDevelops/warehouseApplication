@@ -32,12 +32,20 @@ public class MariaDB {
     private String dataBasePort;
     private String dataBaseUser;
     
+    public MariaDB(String dataBaseAddress, String dataBasePort, String dataBaseUser){
+        this.dataBaseAddress = dataBaseAddress;
+        this.dataBasePort = dataBasePort;
+        this.dataBaseUser = dataBaseUser;
+    }
+    
     /**
      * Opens connection to database and returns Connection
      * @return  Returns Connection
      * @throws SQLException 
+     * @throws java.io.FileNotFoundException 
+     * @throws org.json.simple.parser.ParseException 
      */
-    public static Connection openConnection() throws SQLException, FileNotFoundException, IOException, ParseException {
+    public Connection openConnection() throws SQLException, FileNotFoundException, IOException, ParseException {
         Object object = new JSONParser().parse(new FileReader("dataBaseUser.json"));
         JSONObject jsonObject = (JSONObject) object;
         String user = (String) jsonObject.get("user");
