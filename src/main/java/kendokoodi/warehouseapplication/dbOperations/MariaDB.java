@@ -23,37 +23,66 @@ import org.json.simple.parser.ParseException;
  * @author mika
  * @author Mika.1.virtala@edu.karelia.fi
  */
-public class MariaDB {
+abstract class MariaDB {
     
     //private static final String connectionString = 
     //        "jdbc:mariadb://localhost:3306?user=kayttaja&password=pjger903lk43";
     
     private String dataBaseAddress;
+    private String dataBaseName;
     private String dataBasePort;
     private String dataBaseUser;
     
-    public MariaDB(String dataBaseAddress, String dataBasePort, String dataBaseUser){
-        this.dataBaseAddress = dataBaseAddress;
-        this.dataBasePort = dataBasePort;
-        this.dataBaseUser = dataBaseUser;
+    protected MariaDB(){
+        
+        try{
+            ArrayList<String> settings = getSettings();
+            this.dataBaseAddress = settings.get(0);
+            this.dataBaseName = settings.get(1);
+            this.dataBasePort = settings.get(2);
+            this.dataBaseUser = settings.get(3);
+            }
+            catch(IOException | SQLException | ParseException e){
+            System.out.println(e.toString());
+            }
+        
+    }
+    
+    public String[] testDataReading(){
+        String[] daatta = {this.dataBaseAddress,this.dataBaseName, this.dataBasePort, this.dataBaseUser};
+        return daatta;
     }
     
     /**
-     * Opens connection to database and returns Connection
-     * @return  Returns Connection
+     * Gets settings from settings file
+     * @return  Returns Array of settings, [0]database address, [1]database port, [2] user
      * @throws SQLException 
      * @throws java.io.FileNotFoundException 
      * @throws org.json.simple.parser.ParseException 
      */
-    public Connection openConnection() throws SQLException, FileNotFoundException, IOException, ParseException {
+    protected ArrayList<String>  getSettings() throws SQLException, FileNotFoundException, IOException, ParseException {
+        ArrayList<String> settings = new ArrayList<>();
         Object object = new JSONParser().parse(new FileReader("dataBaseUser.json"));
         JSONObject jsonObject = (JSONObject) object;
-        String user = (String) jsonObject.get("user");
-        String dbAddr = (String) jsonObject.get("dataBaseAddress");
-        String port = (String) jsonObject.get("dataBasePort");
+        settings.add( (String) jsonObject.get("dataBaseAddress") );
+        settings.add( (String) jsonObject.get("databaseName") );
+        settings.add( (String) jsonObject.get("dataBasePort") );
+        settings.add( (String) jsonObject.get("user") );
         jsonObject = null;
-        Connection connection = DriverManager.getConnection ( 
-        "jdbc:mariadb://" + dbAddr + ":" + port + "?user=" + user );
+//        Connection connection = DriverManager.getConnection ( 
+//        "jdbc:mariadb://" + dbAddr + ":" + port + "?user=" + user );
+        
+        return settings;
+    }
+    
+    /**
+     * Opens database connection.
+     * @return Connection to database
+     * @throws SQLException 
+     */
+    protected Connection openConnection() throws SQLException{
+        Connection connection = DriverManager.getConnection(
+        "jdbc:mariadb://"+ this.dataBaseAddress+":"+this.dataBasePort+"?user="+this.dataBaseUser);
         return connection;
     }
     
@@ -62,8 +91,9 @@ public class MariaDB {
      * @param c Connection
      * @throws SQLException 
      */
-    public static void closeConnection( Connection c ) throws SQLException {
+    protected void closeConnection( Connection c ) throws SQLException {
         if ( c != null ) { c.close(); } }
+    
     
     
     /**
@@ -71,7 +101,7 @@ public class MariaDB {
      * @param serProd object containing attributes of a serialized product.
      * @throws SQLException 
      */
-    public static void addSerializedProduct( SerProdInfo serProd ) throws SQLException, IOException, FileNotFoundException, ParseException {
+    public void addSerializedProduct( SerProdInfo serProd ) throws SQLException, IOException, FileNotFoundException, ParseException {
         
         Connection c = openConnection();
         Statement stmt = c.createStatement();
@@ -106,8 +136,8 @@ public class MariaDB {
      * deleteDB() deletes demonstrational warehouse database.
      * @throws SQLException 
      */
-    public static void deleteDB() throws SQLException, IOException, FileNotFoundException, ParseException {
-        Connection c = openConnection();
+    public void deleteDB() throws SQLException, IOException, FileNotFoundException, ParseException {
+        Connection c = this.openConnection();
         Statement stmt = c.createStatement();
         stmt.execute("SET autocommit=1");
         stmt.executeQuery("DROP DATABASE IF EXISTS testDB");
@@ -120,7 +150,7 @@ public class MariaDB {
      * @param id product id (record key) to be deleted.
      * @throws SQLException 
      */
-    public static void deleteRecord(int id) throws SQLException, IOException, FileNotFoundException, ParseException{
+    public void deleteRecord(int id) throws SQLException, IOException, FileNotFoundException, ParseException{
         Connection c = openConnection();
         Statement stmt = c.createStatement();
         stmt.execute("SET autocommit=1");
@@ -136,7 +166,7 @@ public class MariaDB {
      * @param serializedProduct data to be updated to database.
      * @throws SQLException 
      */
-    public static void updateSerializedProduct( SerProdInfo serializedProduct ) throws SQLException, IOException, FileNotFoundException, ParseException {
+    public void updateSerializedProduct( SerProdInfo serializedProduct ) throws SQLException, IOException, FileNotFoundException, ParseException {
         Connection c = openConnection();
         Statement stmt = c.createStatement();
         stmt.execute("SET autocommit=1");
@@ -174,7 +204,7 @@ public class MariaDB {
      * @return product information from database
      * @throws SQLException 
      */
-    public static SerProdInfo getSerializedProductData(int prodID) throws SQLException, IOException, FileNotFoundException, ParseException{
+    public SerProdInfo getSerializedProductData(int prodID) throws SQLException, IOException, FileNotFoundException, ParseException{
         Connection c = openConnection();
         Statement stmt = c.createStatement();
         stmt.execute("SET autocommit=1");
@@ -214,7 +244,7 @@ public class MariaDB {
      * @return ArrayList of lease IDs
      * @throws SQLException 
      */
-    public static ArrayList<String> getLeaseIDlist() throws SQLException, IOException, FileNotFoundException, ParseException{
+    public ArrayList<String> getLeaseIDlist() throws SQLException, IOException, FileNotFoundException, ParseException{
         
         ArrayList<String> leaseIdList = new ArrayList<>();
         
@@ -242,7 +272,7 @@ public class MariaDB {
      * @return ArrayList of room ID.
      * @throws SQLException 
      */
-    public static ArrayList<String> getRoomIDlist() throws SQLException, IOException, FileNotFoundException, ParseException{
+    public ArrayList<String> getRoomIDlist() throws SQLException, IOException, FileNotFoundException, ParseException{
         
         ArrayList<String> roomIdList = new ArrayList<>();
         
@@ -271,7 +301,7 @@ public class MariaDB {
      * @return ArrayList of storage positions.
      * @throws SQLException 
      */
-    public static ArrayList<String> getStorageIDlist() throws SQLException, IOException, FileNotFoundException, ParseException {
+    public ArrayList<String> getStorageIDlist() throws SQLException, IOException, FileNotFoundException, ParseException {
         
         ArrayList<String> storageIdList = new ArrayList<>();
         
@@ -294,116 +324,6 @@ public class MariaDB {
         return storageIdList;
     }
 
-    /**
-     * Lists all serialized products in SerializedProduct table.
-     * @return ArrayList of SerProd object containing all products from database.
-     * @throws SQLException 
-     */
-    public static ArrayList<SerProdInfo> listAllSerialized() throws SQLException, IOException, FileNotFoundException, ParseException{
-        ArrayList<SerProdInfo> serProdInfo = new ArrayList<>();
-        
-        Connection c = openConnection();
-        
-        Statement stmt = c.createStatement();
-        stmt.execute("SET autocommit=1");
-        stmt.execute("USE DemoWarehouseApplicationDB");
-        ResultSet rs = stmt.executeQuery("SELECT * FROM SerializedProduct"
-                + " ORDER BY productID");
-        //stmt.execute("COMMIT");
-        stmt.close();
-        closeConnection ( c );
-        
-        // Handle result set
-        while (rs.next()){
-            
-            SerProdInfo serialized = new SerProdInfo();
-            serialized.productID = rs.getInt("productID");
-            serialized.productNo = rs.getString("productNo");
-            serialized.serialNo = rs.getString("serialNo");
-            serialized.manufacturer = rs.getString("manufacturer");
-            serialized.name =rs.getString("name");
-            serialized.warranty = rs.getInt("warranty");
-            serialized.isOwned = rs.getInt("isOwned");
-            serialized.leaseID = rs.getInt("leaseID");
-            serialized.roomID = rs.getString("roomID");
-            serialized.positionID = rs.getString("positionID");
-            
-            // add to array list
-            serProdInfo.add(serialized);
-        }
-        
-        return serProdInfo;
-    }
-
-    /**
-     * Search database on product name or serial number.
-     * @param searchString String is used for searching the database.
-     * @param searchBase int 0 or 1. 0 uses searchString for product names 1
-     * uses searchString for product serial numbers.
-     * @return ArrayList of SerProdInfo objects containing search results.
-     * @throws SQLException
-     */
-    public static ArrayList<SerProdInfo> searchSerialized( String searchString, int searchBase ) throws SQLException, IOException, FileNotFoundException, ParseException {
-        
-        ArrayList<SerProdInfo> serProdInfo = new ArrayList<>();
-        String base;
-        
-        switch (searchBase){
-            case 0:
-                base = "name LIKE ";
-            break;
-            
-            case 1:
-                base = "serialNo=";
-            break;
-            
-            default:
-                base = "notDefined"; // will cause SQL exception
-        }
-        
-        Connection c = openConnection();
-        
-        Statement stmt = c.createStatement();
-        stmt.execute("SET autocommit=1");
-        
-        // select demo database
-        stmt.executeQuery( "USE DemoWarehouseApplicationDB" );
-        
-        PreparedStatement pstmt = c.prepareStatement(
-                "SELECT * FROM SerializedProduct WHERE "+ base + "?"
-        );
-        
-        pstmt.setString(1, searchString);
-        ResultSet rs = pstmt.executeQuery();
-        
-        stmt.close();
-        pstmt.close();
-        closeConnection( c );
-        
-        // Handle result set
-        while (rs.next()){
-            
-            SerProdInfo serialized = new SerProdInfo();
-            serialized.productID = rs.getInt("productID");
-            serialized.productNo = rs.getString("productNo");
-            serialized.serialNo = rs.getString("serialNo");
-            serialized.manufacturer = rs.getString("manufacturer");
-            serialized.name =rs.getString("name");
-            serialized.warranty = rs.getInt("warranty");
-            serialized.isOwned = rs.getInt("isOwned");
-            serialized.leaseID = rs.getInt("leaseID");
-            serialized.roomID = rs.getString("roomID");
-            serialized.positionID = rs.getString("positionID");
-            
-            // add to array list
-            serProdInfo.add(serialized);
-        }
-        
-        // return array list of products.
-        return serProdInfo;
-    
-    }
-    
     /**
      * Writes SQLException information to log file.
      * @param e SQLException
