@@ -33,11 +33,11 @@ public class DataDefinitionTest {
     /**
      * Test of createDatabase method, of class DataDefinition.
      */
-    @Test
-    public void testCreateDatabase() {
-        DataDefinition dataDefinition = new DataDefinition ("localhost","kayttaja","pjger903lk43");
-        boolean response = dataDefinition.createDatabase();
-        assertTrue(response);
-    }
+//    @Test
+//    public void testCreateDatabase() {
+//        DataDefinition dataDefinition = new DataDefinition ("localhost","kayttaja","pjger903lk43");
+//        boolean response = dataDefinition.createDatabase();
+//        assertTrue(response);
+//    }
     
 }

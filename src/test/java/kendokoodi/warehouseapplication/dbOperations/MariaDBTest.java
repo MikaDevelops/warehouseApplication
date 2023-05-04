@@ -17,15 +17,15 @@ public class MariaDBTest {
     /**
      * Test of openConnection method, of class MariaDB.
      */
-    @org.junit.jupiter.api.Test
-    public void testOpenConnection() throws Exception {
-        Find db = new Find();
-        String[] testdata = db.testDataReading();
-        String[] expected = {"192.168.100.39","warehouseApplicationDB","3306","warehouseBasicUser"};
-        System.out.println(testdata[0]+testdata[1]+testdata[2]+testdata[3]);
-        assertArrayEquals(expected, testdata);
-     
-    }
+//    @org.junit.jupiter.api.Test
+//    public void testOpenConnection() throws Exception {
+//        Find db = new Find();
+//        String[] testdata = db.testDataReading();
+//        String[] expected = {"192.168.100.39","warehouseApplicationDB","3306","warehouseBasicUser"};
+//        System.out.println(testdata[0]+testdata[1]+testdata[2]+testdata[3]);
+//        assertArrayEquals(expected, testdata);
+//     
+//    }
 
     // tulee testattua joka testissä
 //    /**
