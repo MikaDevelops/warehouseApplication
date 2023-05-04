@@ -20,7 +20,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import static kendokoodi.warehouseapplication.dbOperations.MariaDB.*;
-import kendokoodi.warehouseapplication.dbOperations.SerProdInfo;
+import kendokoodi.warehouseapplication.dbOperations.ProductInfo;
 import org.json.simple.parser.ParseException;
 
 /**
@@ -44,7 +44,7 @@ public class EditViewController implements Initializable {
     public void bindData () throws SQLException, IOException, FileNotFoundException, ParseException{
         
         // Load data from database
-        SerProdInfo data = getSerializedProductData(id);
+        ProductInfo data = getSerializedProductData(id);
         
         // set data in text fields
         textFieldProductId.setText(String.valueOf( data.productID ) );
@@ -238,7 +238,7 @@ public class EditViewController implements Initializable {
         lblAttProdStored.setVisible(false);
         lblAttLeaseOwned.setVisible(false);
         
-        SerProdInfo formInfo = new SerProdInfo();
+        ProductInfo formInfo = new ProductInfo();
         // read data from form to data.
         formInfo.productID = Integer.parseInt(textFieldProductId.getText());
         formInfo.manufacturer = textFieldManufacturer.getText();

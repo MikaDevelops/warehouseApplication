@@ -80,11 +80,11 @@ abstract class MariaDB {
      * @return Connection to database
      * @throws SQLException 
      */
-    protected Connection openConnection() throws SQLException{
-        Connection connection = DriverManager.getConnection(
-        "jdbc:mariadb://"+ this.dataBaseAddress+":"+this.dataBasePort+"?user="+this.dataBaseUser);
-        return connection;
-    }
+//    protected Connection openConnection() throws SQLException{
+//        Connection connection = DriverManager.getConnection(
+//        "jdbc:mariadb://"+ this.dataBaseAddress+":"+this.dataBasePort+"?user="+this.dataBaseUser);
+//        return connection;
+//    }
     
     /**
      * Closes Connection that is passed as parameter
@@ -101,49 +101,49 @@ abstract class MariaDB {
      * @param serProd object containing attributes of a serialized product.
      * @throws SQLException 
      */
-    public void addSerializedProduct( SerProdInfo serProd ) throws SQLException, IOException, FileNotFoundException, ParseException {
-        
-        Connection c = openConnection();
-        Statement stmt = c.createStatement();
-        stmt.execute("SET autocommit=1");
-        stmt.execute("USE DemoWarehouseApplicationDB");
-        
-        PreparedStatement pstmt = c.prepareStatement(
-        "INSERT INTO SerializedProduct (productNo, serialNo, manufacturer, name, warranty, "
-        + "isOwned, isInProduction, leaseID, roomID, positionID) VALUES "
-        + "(?,?,?,?,?,?,?,?,?,?)"
-        );
-        
-        pstmt.setString(1, serProd.productNo);
-        pstmt.setString(2, serProd.serialNo);
-        pstmt.setString(3, serProd.manufacturer);
-        pstmt.setString(4, serProd.name);
-        pstmt.setInt(5, serProd.warranty);
-        pstmt.setInt(6, serProd.isOwned);
-        pstmt.setInt(7, serProd.isInProduction);
-        if ( serProd.leaseID == 0 ) { pstmt.setString(8,null); }else{
-            pstmt.setInt(8, serProd.leaseID); }
-        pstmt.setString(9, serProd.roomID);
-        pstmt.setString(10, serProd.positionID);
-        
-        pstmt.execute();
-        stmt.close();
-        pstmt.close();
-        closeConnection ( c );
-    }
+//    public void addSerializedProduct( ProductInfo serProd ) throws SQLException, IOException, FileNotFoundException, ParseException {
+//        
+//        Connection c = openConnection();
+//        Statement stmt = c.createStatement();
+//        stmt.execute("SET autocommit=1");
+//        stmt.execute("USE DemoWarehouseApplicationDB");
+//        
+//        PreparedStatement pstmt = c.prepareStatement(
+//        "INSERT INTO SerializedProduct (productNo, serialNo, manufacturer, name, warranty, "
+//        + "isOwned, isInProduction, leaseID, roomID, positionID) VALUES "
+//        + "(?,?,?,?,?,?,?,?,?,?)"
+//        );
+//        
+//        pstmt.setString(1, serProd.productNo);
+//        pstmt.setString(2, serProd.serialNo);
+//        pstmt.setString(3, serProd.manufacturer);
+//        pstmt.setString(4, serProd.name);
+//        pstmt.setInt(5, serProd.warranty);
+//        pstmt.setInt(6, serProd.isOwned);
+//        pstmt.setInt(7, serProd.isInProduction);
+//        if ( serProd.leaseID == 0 ) { pstmt.setString(8,null); }else{
+//            pstmt.setInt(8, serProd.leaseID); }
+//        pstmt.setString(9, serProd.roomID);
+//        pstmt.setString(10, serProd.positionID);
+//        
+//        pstmt.execute();
+//        stmt.close();
+//        pstmt.close();
+//        closeConnection ( c );
+//    }
     
     /**
      * deleteDB() deletes demonstrational warehouse database.
      * @throws SQLException 
      */
-    public void deleteDB() throws SQLException, IOException, FileNotFoundException, ParseException {
-        Connection c = this.openConnection();
-        Statement stmt = c.createStatement();
-        stmt.execute("SET autocommit=1");
-        stmt.executeQuery("DROP DATABASE IF EXISTS testDB");
-        stmt.close();
-        closeConnection(c);
-    }
+//    public void deleteDB() throws SQLException, IOException, FileNotFoundException, ParseException {
+//        Connection c = this.openConnection();
+//        Statement stmt = c.createStatement();
+//        stmt.execute("SET autocommit=1");
+//        stmt.executeQuery("DROP DATABASE IF EXISTS testDB");
+//        stmt.close();
+//        closeConnection(c);
+//    }
     
     /**
      * Deletes a record in database.
@@ -166,7 +166,7 @@ abstract class MariaDB {
      * @param serializedProduct data to be updated to database.
      * @throws SQLException 
      */
-    public void updateSerializedProduct( SerProdInfo serializedProduct ) throws SQLException, IOException, FileNotFoundException, ParseException {
+    public void updateSerializedProduct( ProductInfo serializedProduct ) throws SQLException, IOException, FileNotFoundException, ParseException {
         Connection c = openConnection();
         Statement stmt = c.createStatement();
         stmt.execute("SET autocommit=1");
@@ -204,7 +204,7 @@ abstract class MariaDB {
      * @return product information from database
      * @throws SQLException 
      */
-    public SerProdInfo getSerializedProductData(int prodID) throws SQLException, IOException, FileNotFoundException, ParseException{
+    public ProductInfo getSerializedProductData(int prodID) throws SQLException, IOException, FileNotFoundException, ParseException{
         Connection c = openConnection();
         Statement stmt = c.createStatement();
         stmt.execute("SET autocommit=1");
@@ -217,7 +217,7 @@ abstract class MariaDB {
         
         closeConnection ( c );
         
-        SerProdInfo result = new SerProdInfo();
+        ProductInfo result = new ProductInfo();
         
         // move cursor to first row
         rs.first();

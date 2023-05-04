@@ -4,7 +4,7 @@ package kendokoodi.warehouseapplication.dbOperations;
  * Serialized product information
  * @author Mika.1.virtala@edu.karelia.fi
  */
-public class SerProdInfo {
+public class ProductInfo {
     public int productID;
     public String productNo;
     public String serialNo;

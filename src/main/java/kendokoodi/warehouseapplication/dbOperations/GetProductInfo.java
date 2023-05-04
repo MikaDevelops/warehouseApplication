@@ -14,7 +14,7 @@ import org.json.simple.parser.ParseException;
  * Fetches data from database.
  * @author mika
  */
-public class GetData extends MariaDB {
+public class GetProductInfo {
     
     /**
      * Searches database with given search string and field.
@@ -26,8 +26,8 @@ public class GetData extends MariaDB {
      * @throws FileNotFoundException
      * @throws ParseException 
      */
-    public ArrayList<SerProdInfo> search(String searchString, int searchBase) throws SQLException, IOException, FileNotFoundException, ParseException{
-        ArrayList<SerProdInfo> serProdInfo = new ArrayList<>();
+    protected ArrayList<ProductInfo> find(String searchString, int searchBase) throws SQLException, IOException, FileNotFoundException, ParseException{
+        ArrayList<ProductInfo> serProdInfo = new ArrayList<>();
         String base;
         
         switch (searchBase){
@@ -43,7 +43,8 @@ public class GetData extends MariaDB {
                 base = "notDefined"; // will cause SQL exception
         }
         
-        Connection c = openConnection();
+        ConnectionHandler connection = new ConnectionHandler();
+        Connection c = connection.getConnection();
         
         Statement stmt = c.createStatement();
         stmt.execute("SET autocommit=1");
@@ -60,12 +61,12 @@ public class GetData extends MariaDB {
         
         stmt.close();
         pstmt.close();
-        closeConnection( c );
+        connection.closeConnection( c );
         
         // Handle result set
         while (rs.next()){
             
-            SerProdInfo serialized = new SerProdInfo();
+            ProductInfo serialized = new ProductInfo();
             serialized.productID = rs.getInt("productID");
             serialized.productNo = rs.getString("productNo");
             serialized.serialNo = rs.getString("serialNo");
@@ -90,11 +91,12 @@ public class GetData extends MariaDB {
      * @return ArrayList of SerProd objects containing all products from database
      * @throws SQLException 
      */
-    public ArrayList<SerProdInfo> all() throws SQLException{
+    public ArrayList<ProductInfo> all() throws SQLException, IOException, FileNotFoundException, ParseException{
     
-        ArrayList<SerProdInfo> serProdInfo = new ArrayList<>();
+        ArrayList<ProductInfo> serProdInfo = new ArrayList<>();
         
-        Connection c = openConnection();
+        ConnectionHandler connection = new ConnectionHandler();
+        Connection c = connection.getConnection();
         
         Statement stmt = c.createStatement();
         stmt.execute("SET autocommit=1");
@@ -103,12 +105,12 @@ public class GetData extends MariaDB {
                 + " ORDER BY productID");
         //stmt.execute("COMMIT");
         stmt.close();
-        closeConnection ( c );
+        connection.closeConnection ( c );
         
         // Handle result set
         while (rs.next()){
             
-            SerProdInfo serialized = new SerProdInfo();
+            ProductInfo serialized = new ProductInfo();
             serialized.productID = rs.getInt("productID");
             serialized.productNo = rs.getString("productNo");
             serialized.serialNo = rs.getString("serialNo");

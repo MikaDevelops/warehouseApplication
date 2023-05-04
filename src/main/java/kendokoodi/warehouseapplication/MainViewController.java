@@ -20,8 +20,8 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
-import static kendokoodi.warehouseapplication.dbOperations.MariaDB.*;
-import kendokoodi.warehouseapplication.dbOperations.SerProdInfo;
+import kendokoodi.warehouseapplication.dbOperations.GetProductInfo;
+import kendokoodi.warehouseapplication.dbOperations.ProductInfo;
 import org.json.simple.parser.ParseException;
 
 
@@ -98,7 +98,7 @@ public class MainViewController {
     private ComboBox<String> cmbBoxStorage;
     
     @FXML
-    private ListView<SerProdInfo> listViewSerializedMain;
+    private ListView<ProductInfo> listViewSerializedMain;
 
     /**
      * Event handler for menu close. Closes program and drops demo database.
@@ -134,13 +134,13 @@ public class MainViewController {
     @FXML
     private void btnMainListAllAction(ActionEvent event) throws IOException, FileNotFoundException, ParseException {
         try {
-        ArrayList<SerProdInfo> result = listAllSerialized();
+        ArrayList<ProductInfo> result = listAllSerialized();
         ObservableList ol = FXCollections.observableArrayList( result );
 
         listViewSerializedMain.setItems( ol );
-        listViewSerializedMain.setCellFactory(clbck -> new ListCell<SerProdInfo>() {
+        listViewSerializedMain.setCellFactory(clbck -> new ListCell<ProductInfo>() {
             @Override
-            protected void updateItem(SerProdInfo item, boolean empty){
+            protected void updateItem(ProductInfo item, boolean empty){
             super.updateItem( item, empty );
             
             if (empty || item == null){ setText(null); }
@@ -174,15 +174,15 @@ public class MainViewController {
         
         try {
         // run search and catch results
-        ArrayList<SerProdInfo> result = searchSerialized(inputText,searchOn);
+        ArrayList<ProductInfo> result = searchSerialized(inputText,searchOn);
         
-        ObservableList<SerProdInfo> ol = FXCollections.observableArrayList(result);
+        ObservableList<ProductInfo> ol = FXCollections.observableArrayList(result);
 
         // update results to view
         listViewSerializedMain.setItems(ol);
-        listViewSerializedMain.setCellFactory(clbck -> new ListCell<SerProdInfo>() {
+        listViewSerializedMain.setCellFactory(clbck -> new ListCell<ProductInfo>() {
             @Override
-            protected void updateItem(SerProdInfo item, boolean empty){
+            protected void updateItem(ProductInfo item, boolean empty){
             super.updateItem( item, empty );
             
             if (empty || item == null){ setText(null); }
@@ -204,7 +204,7 @@ public class MainViewController {
      */
     @FXML
     private void btnEditSelectedAction(ActionEvent event) throws IOException {
-        SerProdInfo selected = listViewSerializedMain.getSelectionModel().getSelectedItem();
+        ProductInfo selected = listViewSerializedMain.getSelectionModel().getSelectedItem();
         
         if (selected != null){
         lblEditMsg.setText("");
@@ -221,8 +221,8 @@ public class MainViewController {
     @FXML
     private void btnSaveAdd(ActionEvent event) throws IOException, FileNotFoundException, ParseException {
         
-        // New instance of SerProdInfo.
-        SerProdInfo formInfo = new SerProdInfo();
+        // New instance of ProductInfo.
+        ProductInfo formInfo = new ProductInfo();
         
         // First try warranty. User must give integer input.
         boolean warrantyOk = false;
