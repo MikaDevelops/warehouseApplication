@@ -47,10 +47,8 @@ public class GetProductInfo {
         Connection c = connection.getConnection();
         
         Statement stmt = c.createStatement();
-        stmt.execute("SET autocommit=1");
-        
-        // select demo database
-        stmt.executeQuery( "USE DemoWarehouseApplicationDB" );
+
+        stmt.executeQuery( "USE warehouseApplicationDB" );
         
         PreparedStatement pstmt = c.prepareStatement(
                 "SELECT * FROM SerializedProduct WHERE "+ base + "?"
@@ -99,8 +97,7 @@ public class GetProductInfo {
         Connection c = connection.getConnection();
         
         Statement stmt = c.createStatement();
-        stmt.execute("SET autocommit=1");
-        stmt.execute("USE DemoWarehouseApplicationDB");
+        stmt.execute("USE warehouseApplicationDB");
         ResultSet rs = stmt.executeQuery("SELECT * FROM SerializedProduct"
                 + " ORDER BY productID");
         //stmt.execute("COMMIT");
