@@ -22,7 +22,7 @@ CREATE TABLE StoreRoom
 
 CREATE TABLE StoragePosition
 (
-  positionID INT NOT NULL AUTO_INCREMENT,
+  positionID VARCHAR(50) NOT NULL,
   storeRoomID VARCHAR(50) NOT NULL,
   PRIMARY KEY (positionID),
   FOREIGN KEY (storeRoomID) REFERENCES StoreRoom(storeRoomID)
@@ -33,7 +33,7 @@ CREATE TABLE Accessory
   name VARCHAR(80) NOT NULL,
   accessoryID INT NOT NULL AUTO_INCREMENT,
   quantity INT NOT NULL,
-  productDesc VARCHAR(90),
+  productDesc VARCHAR(200),
   manufacturer VARCHAR(50),
   productNo VARCHAR(80),
   PRIMARY KEY (accessoryID)
@@ -51,7 +51,7 @@ CREATE TABLE Leasing
 
 CREATE TABLE AccessoryPos
 (
-  positionID INT NOT NULL,
+  positionID VARCHAR(50) NOT NULL,
   accessoryID INT NOT NULL,
   FOREIGN KEY (positionID) REFERENCES StoragePosition(positionID),
   FOREIGN KEY (accessoryID) REFERENCES Accessory(accessoryID)
@@ -78,7 +78,7 @@ CREATE TABLE Vendors
 CREATE TABLE SerializedProduct
 (
   productNo VARCHAR(80),
-  serialNo INT NOT NULL,
+  serialNo VARCHAR(80) NOT NULL,
   manufacturer VARCHAR(80) NOT NULL,
   name VARCHAR(80) NOT NULL,
   warranty INT NOT NULL,
@@ -87,7 +87,7 @@ CREATE TABLE SerializedProduct
   isInProduction INT NOT NULL,
   leaseID INT,
   roomID VARCHAR(10),
-  positionID INT,
+  positionID VARCHAR(50),
   orderID INT,
   PRIMARY KEY (productID),
   FOREIGN KEY (leaseID) REFERENCES Leasing(leaseID),
