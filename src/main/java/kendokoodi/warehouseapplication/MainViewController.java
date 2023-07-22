@@ -135,7 +135,8 @@ public class MainViewController {
     @FXML
     private void btnMainListAllAction(ActionEvent event) throws IOException, FileNotFoundException, ParseException {
         try {
-        ArrayList<ProductInfo> result = listAllSerialized();
+        GetProductInfo getInfo = new GetProductInfo();
+        ArrayList<ProductInfo> result = getInfo.all();
         ObservableList ol = FXCollections.observableArrayList( result );
 
         listViewSerializedMain.setItems( ol );
@@ -177,7 +178,8 @@ public class MainViewController {
         
         try {
         // run search and catch results
-        ArrayList<ProductInfo> result = searchSerialized(inputText,searchOn);
+        GetProductInfo getInfo = new GetProductInfo();
+        ArrayList<ProductInfo> result = getInfo.find(inputText,searchOn);
         
         ObservableList<ProductInfo> ol = FXCollections.observableArrayList(result);
 

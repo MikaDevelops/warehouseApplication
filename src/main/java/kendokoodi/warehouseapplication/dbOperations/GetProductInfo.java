@@ -26,7 +26,7 @@ public class GetProductInfo {
      * @throws FileNotFoundException
      * @throws ParseException 
      */
-    protected ArrayList<ProductInfo> find(String searchString, int searchBase) throws SQLException, IOException, FileNotFoundException, ParseException{
+    public ArrayList<ProductInfo> find(String searchString, int searchBase) throws SQLException, IOException, FileNotFoundException, ParseException{
         ArrayList<ProductInfo> serProdInfo = new ArrayList<>();
         String base;
         
