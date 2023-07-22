@@ -22,6 +22,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 import kendokoodi.warehouseapplication.dbOperations.GetProductInfo;
 import kendokoodi.warehouseapplication.dbOperations.ProductInfo;
+import kendokoodi.warehouseapplication.dbOperations.SQLExceptionHandler;
 import org.json.simple.parser.ParseException;
 
 
@@ -151,8 +152,10 @@ public class MainViewController {
                 }
             }
         });
-        } catch (SQLException ex){ sqlExceptionHandler(ex,
-                "mainView btnMainListAllAction"); }
+        } catch (SQLException ex){ 
+            SQLExceptionHandler handler = new SQLExceptionHandler(ex, "mainView btnMainListAllAction");
+            handler.log();
+        }
     }
     
     /**
@@ -193,7 +196,10 @@ public class MainViewController {
                 }
             }
         });
-        } catch (SQLException ex) { sqlExceptionHandler(ex, "mainView btnMainSearchAction"); }
+        } catch (SQLException ex) { 
+            SQLExceptionHandler handler = new SQLExceptionHandler(ex, "mainView btnMainSearchAction");
+            handler.log(); 
+        }
     }
     
     /**
@@ -309,8 +315,12 @@ public class MainViewController {
             formInfo = null;
             lblAttWarranty.setVisible(false);
             
-            } catch (SQLException ex){ sqlExceptionHandler(ex,
-                    "mainView btnSaveAdd action event"); }
+            } catch (SQLException ex){ 
+             
+            SQLExceptionHandler handler = new SQLExceptionHandler(ex, "mainView btnSaveAdd");
+            handler.log(); 
+        
+        }
         }
         
     }
@@ -349,8 +359,12 @@ public class MainViewController {
         }else if (!chkLeaseAdd.isSelected()) {
             cmbBoxLease.setDisable(true);
         }
-        } catch (SQLException ex){ sqlExceptionHandler(ex,
-                "mainView chkLeaseAddAction"); }
+        } catch (SQLException ex){ 
+             
+            SQLExceptionHandler handler = new SQLExceptionHandler(ex, "mainView chkLeaseAddAction");
+            handler.log(); 
+        
+        }
     }
     
     /**
@@ -371,8 +385,12 @@ public class MainViewController {
                     FXCollections.observableArrayList(roomIdList);
                 cmbBoxRoom.setItems(roomIdObservableList);
     	}
-        }catch(SQLException ex){ sqlExceptionHandler(ex,
-                "mainView radInProductionAction"); }
+        }catch (SQLException ex){ 
+             
+            SQLExceptionHandler handler = new SQLExceptionHandler(ex, "mainView radInProductionAction");
+            handler.log(); 
+        
+        }
     }
     
     /**
@@ -392,7 +410,11 @@ public class MainViewController {
                     FXCollections.observableArrayList(storageIdList);
                 cmbBoxStorage.setItems(storageIdObservableList);
     	}
-        } catch (SQLException ex){ sqlExceptionHandler(ex,
-                "mainView radProductInStorageAction"); }
+        } catch (SQLException ex){ 
+             
+            SQLExceptionHandler handler = new SQLExceptionHandler(ex, "mainView radProductInStorageAction");
+            handler.log(); 
+        
+        }
     }
 }
